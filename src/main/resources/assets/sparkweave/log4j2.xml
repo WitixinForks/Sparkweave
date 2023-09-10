@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" name="Sparkweave">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t/%logger{36}][%level] %msg%n"/>
+        </Console>
+        <File name="SparkweaveDebug" fileName="logs/sparkweave_debug.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t/%logger{36}][%level] %msg%n"/>
+        </File>
+        <Async name="SparkweaveDebugAsync">
+            <AppenderRef ref="MeshDebug" />
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="SparkweaveDebugAsync"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.upcraft.sparkweave.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "debug.MixinDeveloperSession",
+    "debug.MixinRemoveAuthError",
+    "debug.UserDataAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
