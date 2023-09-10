@@ -21,6 +21,9 @@
 				"dev.upcraft.test.sparkweave.client.SparkweaveTestModClient"
 			],
 			"pre_launch": [
+			],
+			"quilt:game_test": [
+				"dev.upcraft.test.sparkweave.gametest.AlwaysTrueGameTest"
 			]
 		},
 		"depends": [
