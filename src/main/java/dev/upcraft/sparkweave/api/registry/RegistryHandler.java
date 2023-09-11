@@ -40,8 +40,7 @@ public class RegistryHandler<T> implements Consumer<RegistryService> {
 
 	@Override
 	public void accept(RegistryService registryService) {
-		var registry = registryService.getRegistry(this.registryKey);
-		this.values.values().forEach(supplier -> supplier.register(registry));
+		registryService.registerAll(this);
 	}
 
 	public Map<ResourceLocation, RegistrySupplier<T>> values() {
@@ -54,5 +53,9 @@ public class RegistryHandler<T> implements Consumer<RegistryService> {
 
 	public Stream<RegistrySupplier<T>> stream() {
 		return orderedEntries.stream();
+	}
+
+	public ResourceKey<Registry<T>> registry() {
+		return registryKey;
 	}
 }

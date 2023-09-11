@@ -1,8 +1,6 @@
 package dev.upcraft.sparkweave.api.registry;
 
 import dev.upcraft.sparkweave.api.Platform;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 
 public interface RegistryService {
 
@@ -10,5 +8,5 @@ public interface RegistryService {
         return Platform.getService(RegistryService.class);
     }
 
-    <T> Registry<T> getRegistry(ResourceKey<Registry<T>> registryResourceKey);
+	<T> void registerAll(RegistryHandler<T> handler);
 }
