@@ -32,6 +32,10 @@ public class RegistrySupplier<T> implements Supplier<T> {
 		return value;
 	}
 
+	public boolean is(T other) {
+		return this.get() == other;
+	}
+
 	public ResourceLocation getId() {
 		return this.id.location();
 	}
