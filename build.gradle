@@ -20,7 +20,7 @@ version = (ENV.TAG ?: "development") + ((isPreviewBuild && !ENV.TAG) ? "+${build
 println("Building ${project.name} ${version}")
 
 //FIXME workaround for quilt-loom bug
-project.configurations.all {
+project.configurations.configureEach {
 	exclude(group: "net.fabricmc", module: "fabric-loader")
 	exclude(group: "net.fabricmc.fabric-api")
 }
