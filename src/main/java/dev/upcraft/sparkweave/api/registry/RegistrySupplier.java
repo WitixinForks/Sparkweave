@@ -1,5 +1,6 @@
 package dev.upcraft.sparkweave.api.registry;
 
+import dev.upcraft.sparkweave.util.Utils;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -26,8 +27,9 @@ public class RegistrySupplier<T> implements Supplier<T> {
 
 	@Override
 	public T get() {
-		if(value == null) {
-			value = Objects.requireNonNull(RegistryService.get().<T>getRegistry(ResourceKey.createRegistryKey(this.id.registry())).get(this.id.location()), "Registry supplier called too early: " + this.getId());
+		if (value == null) {
+			ResourceKey<Registry<T>> registryKey = ResourceKey.createRegistryKey(this.id.registry());
+			value = Objects.requireNonNull(Utils.getBuiltinRegistry(registryKey).get(this.id.location()), "Registry supplier called too early: " + this.getId());
 		}
 		return value;
 	}
@@ -46,7 +48,7 @@ public class RegistrySupplier<T> implements Supplier<T> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof RegistrySupplier<?>) {
+		if (obj instanceof RegistrySupplier<?>) {
 			var otherId = ((RegistrySupplier<?>) obj).getRegistryKey();
 			return this.getRegistryKey().registry().equals(otherId.registry()) && this.getRegistryKey().location().equals(otherId.location());
 		} else {
