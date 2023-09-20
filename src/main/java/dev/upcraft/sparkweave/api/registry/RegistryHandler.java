@@ -30,12 +30,13 @@ public class RegistryHandler<T> implements Consumer<RegistryService> {
 		return new RegistryHandler<>(registryKey, modid);
 	}
 
-	public RegistrySupplier<T> register(String name, Supplier<T> factory) {
+	@SuppressWarnings("unchecked")
+	public <S extends T> RegistrySupplier<S> register(String name, Supplier<S> factory) {
 		var id = new ResourceLocation(modid, name);
-		var supplier = new RegistrySupplier<>(ResourceKey.create(registryKey, id), factory);
+		var supplier = new RegistrySupplier<>(ResourceKey.create(registryKey, id), (Supplier<T>) factory);
 		values.put(id, supplier);
 		orderedEntries.add(supplier);
-		return supplier;
+		return (RegistrySupplier<S>) supplier;
 	}
 
 	@Override
