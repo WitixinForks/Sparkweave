@@ -49,13 +49,13 @@ public class ScheduledTaskQueue {
 	}
 
 	public static <T> CompletableFuture<Either<T, ? extends Exception>> scheduleEphemeral(Callable<T> task, long delayTicks) {
-		var scheduledTask = new SingleRunTask<>(timeSupplier.getAsLong() + delayTicks, task);
+		var scheduledTask = new SingleRunTask<>(timeSupplier.getAsLong() + Math.max(delayTicks, 0), task);
 		TASK_QUEUE.add(scheduledTask);
 		return scheduledTask.result();
 	}
 
 	public static <T> Task<T> scheduleEphemeralAtFixedRate(Callable<T> task, long delayTicks, long periodTicks) {
-		var scheduledTask = new RepeatingTask<>(timeSupplier.getAsLong() + delayTicks, periodTicks, task);
+		var scheduledTask = new RepeatingTask<>(timeSupplier.getAsLong() + Math.max(delayTicks, 0), periodTicks, task);
 		TASK_QUEUE.add(scheduledTask);
 		return scheduledTask;
 	}

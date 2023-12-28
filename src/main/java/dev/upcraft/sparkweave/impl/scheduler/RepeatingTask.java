@@ -1,5 +1,6 @@
 package dev.upcraft.sparkweave.impl.scheduler;
 
+import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Either;
 
 import java.util.concurrent.Callable;
@@ -12,6 +13,7 @@ public class RepeatingTask<T> extends AbstractTask<T> {
 
 	public RepeatingTask(long nextExecutionTime, long period, Callable<T> task) {
 		super(nextExecutionTime, task);
+		Preconditions.checkArgument(period > 0, "Period must be greater than 0!");
 		this.period = period;
 	}
 
