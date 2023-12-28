@@ -19,6 +19,12 @@ version = (ENV.TAG ?: "development") + ((isPreviewBuild && !ENV.TAG) ? "+${build
 
 println("Building ${project.name} ${version}")
 
+// messy workaround for bug in quilt loom 1.3.3
+project.configurations.configureEach {
+	exclude(group: "net.fabricmc", module: "fabric-loader")
+	exclude(group: "net.fabricmc.fabric-api")
+}
+
 chenille {
 	javaVersion = project.ext.javaVersion
 	configureTestmod {
