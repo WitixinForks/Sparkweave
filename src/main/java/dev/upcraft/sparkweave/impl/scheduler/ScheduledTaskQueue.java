@@ -22,7 +22,13 @@ public class ScheduledTaskQueue {
 			TASK_QUEUE.clear();
 			timeSupplier = server.getWorldData().overworldData()::getGameTime;
 		});
-		ServerLifecycleEvents.STOPPED.register(server -> TASK_QUEUE.clear());
+		ServerLifecycleEvents.STOPPED.register(server -> {
+
+			// set all tasks to a cancelled state before clearing the queue
+			TASK_QUEUE.forEach(AbstractTask::cancel);
+			TASK_QUEUE.clear();
+			timeSupplier = () -> 0;
+		});
 		ServerTickEvents.START.register(server -> {
 			long time = timeSupplier.getAsLong();
             for (Iterator<AbstractTask<?>> iterator = TASK_QUEUE.iterator(); iterator.hasNext(); ) {

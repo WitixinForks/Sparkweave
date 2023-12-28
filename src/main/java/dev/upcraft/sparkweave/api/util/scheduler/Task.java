@@ -12,7 +12,7 @@ public interface Task<T> {
 	/**
 	 * Cancel any future execution of this task.
 	 * If the task is currently running, it will be allowed to finish.
-	 * @apiNote Repeatedly calling this method has no effect.
+	 * <p>Repeatedly calling this method has no effect.</p>
 	 */
 	void cancel();
 
