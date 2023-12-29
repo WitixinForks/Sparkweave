@@ -5,16 +5,15 @@ import dev.upcraft.sparkweave.api.util.scheduler.Task;
 import org.quiltmc.qsl.lifecycle.api.event.ServerLifecycleEvents;
 import org.quiltmc.qsl.lifecycle.api.event.ServerTickEvents;
 
-import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongSupplier;
 
 public class ScheduledTaskQueue {
 
-	private static final Queue<AbstractTask<?>> TASK_QUEUE = new ArrayDeque<>();
+	private static final List<AbstractTask<?>> TASK_QUEUE = new ArrayList<>(16);
 	private static volatile LongSupplier timeSupplier = () -> 0;
 
 	public static void init() {
@@ -22,6 +21,7 @@ public class ScheduledTaskQueue {
 			TASK_QUEUE.clear();
 			timeSupplier = server.getWorldData().overworldData()::getGameTime;
 		});
+
 		ServerLifecycleEvents.STOPPED.register(server -> {
 
 			// set all tasks to a cancelled state before clearing the queue
@@ -29,19 +29,24 @@ public class ScheduledTaskQueue {
 			TASK_QUEUE.clear();
 			timeSupplier = () -> 0;
 		});
+
 		ServerTickEvents.START.register(server -> {
+			if(TASK_QUEUE.isEmpty()) return;
+
 			long time = timeSupplier.getAsLong();
-            for (Iterator<AbstractTask<?>> iterator = TASK_QUEUE.iterator(); iterator.hasNext(); ) {
-                AbstractTask<?> task = iterator.next();
+
+			// use a for-i loop to allow for editing the list while iterating
+            for (int i = 0; i < TASK_QUEUE.size(); i++) {
+				AbstractTask<?> task = TASK_QUEUE.get(i);
 
 				if(task.isCancelled()) {
-					iterator.remove();
+					TASK_QUEUE.remove(i--);
 					continue;
 				}
 
 				if(task.nextExecutionTime() <= time) {
 					if(!task.run(timeSupplier)) {
-						iterator.remove();
+						TASK_QUEUE.remove(i--);
 					}
 				}
             }
