@@ -1,0 +1,113 @@
+plugins {
+	id 'idea'
+	alias neoforge.plugins.neogradle
+}
+jarJar.enable()
+
+dependencies {
+	implementation neoforge.neoforge
+	compileOnly project(":Common")
+
+	implementation libs.resourcefulconfig.neoforge
+
+	implementation libs.appdirs
+	jarJar(libs.appdirs) {
+		transitive = false
+		jarJar.ranged(it, "[${libs.versions.appdirs.get()},)")
+	}
+
+	implementation libs.mixin.extras
+	jarJar(libs.mixin.extras) {
+		transitive = false
+		jarJar.ranged(it, "[${libs.versions.mixin.extras.get()},)")
+	}
+
+//	compileOnly "${libs.emi.neoforge.get()}:api"
+//	runtimeOnly libs.emi.neoforge
+}
+
+jar {
+	archiveClassifier.set("slim")
+}
+
+tasks.jarJar.configure {
+	archiveClassifier.set('')
+}
+
+// Automatically enable neoforge AccessTransformers if the file exists
+// This location is hardcoded in FML and can not be changed.
+// https://github.com/neoforged/FancyModLoader/blob/a952595eaaddd571fbc53f43847680b00894e0c1/loader/src/main/java/net/neoforged/fml/loading/moddiscovery/ModFile.java#L118
+if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+	minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
+subsystems {
+	parchment {
+		minecraftVersion = libs.versions.minecraft.get()
+		mappingsVersion = libs.versions.parchment.get()
+	}
+}
+
+runs {
+	configureEach {
+		systemProperty 'forge.logging.markers', 'REGISTRIES'
+		systemProperty 'forge.logging.console.level', 'debug'
+
+		workingDirectory project.file('run')
+
+		modSource project.sourceSets.main
+	}
+	client {
+		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+
+		if (project.hasProperty('mc_uuid')) {
+			programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+		}
+
+		if (project.hasProperty('mc_username')) {
+			programArguments.add("--username=${project.findProperty('mc_username')}")
+		}
+
+		if (project.hasProperty('mc_java_agent_path')) {
+			jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
+		}
+	}
+
+	server {
+		programArguments.addAll 'nogui'
+		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+	}
+
+	data {
+		programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+	}
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// NeoGradle compiles the game, but we don't want to add our common code to the game's code
+Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
+
+tasks.withType(JavaCompile).matching(notNeoTask).configureEach {
+	source(project(":Common").sourceSets.main.allSource)
+}
+
+tasks.withType(Javadoc).matching(notNeoTask).configureEach {
+	source(project(":Common").sourceSets.main.allJava)
+}
+
+tasks.named("sourcesJar", Jar) {
+	from(project(":Common").sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
+	from project(":Common").sourceSets.main.resources
+}
+
+publishing {
+	publications {
+		"mavenJava${project.name}"(MavenPublication) {
+			jarJar.component(it)
+		}
+	}
+}
