@@ -2,8 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.upcraft.sparkweave.neoforge.mixin",
+  "plugin": "dev.upcraft.sparkweave.SparkweaveMixinConfigPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "internal.DeferredHolderMixin",
+    "internal.DeferredRegisterMixin"
+  ],
+  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
