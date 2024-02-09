@@ -8,8 +8,6 @@
   "mixins": [
   ],
   "client": [
-    "debug.MixinDeveloperSession",
-    "debug.UserDataAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
