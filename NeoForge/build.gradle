@@ -56,6 +56,10 @@ runs {
 		workingDirectory project.file('run')
 
 		modSource project.sourceSets.main
+
+		dependencies {
+			runtime(libs.appdirs.get())
+		}
 	}
 	client {
 		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
