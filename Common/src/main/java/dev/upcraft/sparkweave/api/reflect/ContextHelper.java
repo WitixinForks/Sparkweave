@@ -67,7 +67,11 @@ public class ContextHelper {
         return CONTEXT_CACHE.computeIfAbsent(clazz, node -> {
             var annotation = clazz.getDeclaredAnnotation(Mod.Context.class);
             if (annotation == null) {
-                annotation = clazz.getPackage().getAnnotation(Mod.Context.class);
+				var packageName = clazz.getPackage().getName();
+				var packages = ClassLoader.getSystemClassLoader().getUnnamedModule().getPackages();
+				if(packages.contains(packageName)) {
+					annotation = ClassLoader.getSystemClassLoader().getUnnamedModule().getClassLoader().getDefinedPackage(packageName).getAnnotation(Mod.Context.class);
+				}
             }
 
             if (annotation != null) {
