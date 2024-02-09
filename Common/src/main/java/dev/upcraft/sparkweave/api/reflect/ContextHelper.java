@@ -26,6 +26,8 @@ public class ContextHelper {
         // this is necessary to load the root package context
 //		SparkweaveHelper.tryGetMetadata(SparkweaveHelper.MODID).orElseThrow();
 
+		//TODO do this per-platform
+
         // vanilla game
         PACKAGE_CONTEXT_CACHE.put("net.minecraft", "minecraft");
         PACKAGE_CONTEXT_CACHE.put("com.mojang", "minecraft");
@@ -38,6 +40,11 @@ public class ContextHelper {
         PACKAGE_CONTEXT_CACHE.put("net.fabricmc", "quilt_loader");
         PACKAGE_CONTEXT_CACHE.put("net.fabricmc.loader", "quilt_loader");
         PACKAGE_CONTEXT_CACHE.put("net.fabricmc.fabric", "fabric");
+
+		// neoforge
+		PACKAGE_CONTEXT_CACHE.put("net.neoforged", "neoforge");
+		PACKAGE_CONTEXT_CACHE.put("cpw.mods.modlauncher", "neoforge");
+		PACKAGE_CONTEXT_CACHE.put("cpw.mods.cl", "neoforge");
 
         // JVM packages as of Microsoft JDK 17.0.4.101-hotspot
         // @formatter:off
