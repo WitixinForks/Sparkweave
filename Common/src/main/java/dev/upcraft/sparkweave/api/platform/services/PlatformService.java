@@ -1,7 +1,7 @@
 package dev.upcraft.sparkweave.api.platform.services;
 
-import dev.upcraft.sparkweave.api.platform.RuntimeEnvironmentType;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
+import dev.upcraft.sparkweave.api.platform.RuntimeEnvironmentType;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -29,4 +29,8 @@ public interface PlatformService {
 	default String getEnvString() {
 		return !isDevelopmentEnvironment() ? "production" : "development";
 	}
+
+	String getUserAgent();
+
+	String getPlatformName();
 }

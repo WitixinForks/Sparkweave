@@ -5,6 +5,7 @@ import com.mojang.serialization.JsonOps;
 import dev.upcraft.sparkweave.SparkweaveMod;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import dev.upcraft.sparkweave.api.platform.ModMetadata;
+import dev.upcraft.sparkweave.api.platform.Services;
 import dev.upcraft.sparkweave.api.reflect.ContextHelper;
 import dev.upcraft.sparkweave.api.storage.DataStore;
 import dev.upcraft.sparkweave.api.web.HttpStatus;
@@ -58,7 +59,7 @@ public class SparkweaveVanityHandler {
 				HttpRequest request = HttpRequest.newBuilder(URI.create(DATA_URL))
 					.header("Accept", "application/json;charset=UTF-8")
 					.header("Content-Type", "application/json;charset=UTF-8")
-					.header("User-Agent", String.format("%s/%s (%s)", meta.id(), meta.version(), null)) //TODO OS and java info
+					.header("User-Agent", String.format("%s/%s %s", meta.id(), meta.version(), Services.PLATFORM.getUserAgent()))
 					.POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
 					.build();
 				//@formatter:on
