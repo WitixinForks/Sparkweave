@@ -2,10 +2,7 @@ package dev.upcraft.sparkweave.platform;
 
 import dev.upcraft.sparkweave.SparkweaveMod;
 import net.harawata.appdirs.AppDirs;
-import net.harawata.appdirs.impl.MacOSXAppDirs;
-import net.harawata.appdirs.impl.ShellFolderResolver;
-import net.harawata.appdirs.impl.UnixAppDirs;
-import net.harawata.appdirs.impl.WindowsAppDirs;
+import net.harawata.appdirs.AppDirsFactory;
 import net.minecraft.Util;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,12 +13,7 @@ import java.nio.file.attribute.DosFileAttributeView;
 
 public abstract class BasePlatformService {
 
-	protected final AppDirs appDirs = switch (Util.getPlatform()) {
-		case WINDOWS -> new WindowsAppDirs(new ShellFolderResolver());
-		case LINUX -> new UnixAppDirs();
-		case OSX -> new MacOSXAppDirs();
-		default -> throw new IllegalStateException("Unsupported OS: " + System.getProperty("os.name"));
-	};
+	protected final AppDirs appDirs = AppDirsFactory.getInstance();
 
 	public Path getUserDataDir(@Nullable String subDirectory) {
 		Path homeDir = Path.of(appDirs.getUserDataDir(SparkweaveMod.MODID, null, null, false));
