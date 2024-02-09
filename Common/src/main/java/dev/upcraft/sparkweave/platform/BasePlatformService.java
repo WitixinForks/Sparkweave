@@ -16,8 +16,7 @@ public abstract class BasePlatformService {
 	protected final AppDirs appDirs = AppDirsFactory.getInstance();
 
 	public Path getUserDataDir(@Nullable String subDirectory) {
-		Path homeDir = Path.of(appDirs.getUserDataDir(SparkweaveMod.MODID, null, null, false));
-		Path basePath = homeDir.resolve("." + SparkweaveMod.MODID);
+		Path basePath = Path.of(appDirs.getUserDataDir("." + SparkweaveMod.MODID, null, null, false));
 
 		try {
 			Files.createDirectories(basePath);
