@@ -5,8 +5,12 @@ import dev.upcraft.sparkweave.api.platform.services.SparkweaveHelperService;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.world.item.CreativeModeTab;
 
-@CalledByReflection
 public class QuiltHelperService implements SparkweaveHelperService {
+
+	@CalledByReflection
+	public QuiltHelperService() {
+		// need an explicit default constructor for the service loader to work
+	}
 
 	@Override
 	public CreativeModeTab.Builder newCreativeTabBuilder() {

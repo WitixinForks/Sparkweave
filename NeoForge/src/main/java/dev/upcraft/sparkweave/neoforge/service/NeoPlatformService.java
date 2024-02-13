@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@CalledByReflection
 public class NeoPlatformService extends BasePlatformService implements PlatformService {
 
 //	private static final Set<String> SENSITIVE_ARGS = Set.of(
@@ -58,8 +57,9 @@ public class NeoPlatformService extends BasePlatformService implements PlatformS
 		return String.format("%s/%s Minecraft/%s Java/%.1f (%s/%s) (%s %s; %s)", platformName, platformVersion, mcVersion, JavaVersion.current(), jvmVendor, jvmVersion, osName, osVersion, bitness);
 	});
 
-	// need an explicit default constructor for the service loader to work
+	@CalledByReflection
 	public NeoPlatformService() {
+		// need an explicit default constructor for the service loader to work
 		super();
 	}
 

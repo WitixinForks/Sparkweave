@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@CalledByReflection
 public class QuiltPlatformService extends BasePlatformService implements PlatformService {
 
 	private static final String QUILT_LOADER_MODID = "quilt_loader";
@@ -52,8 +51,9 @@ public class QuiltPlatformService extends BasePlatformService implements Platfor
 		return String.format("%s/%s Minecraft/%s Java/%.1f (%s/%s) (%s %s; %s)", platformName, platformVersion, mcVersion, JavaVersion.current(), jvmVendor, jvmVersion, osName, osVersion, bitness);
 	});
 
-	// need an explicit default constructor for the service loader to work
+	@CalledByReflection
 	public QuiltPlatformService() {
+		// need an explicit default constructor for the service loader to work
 		super();
 	}
 

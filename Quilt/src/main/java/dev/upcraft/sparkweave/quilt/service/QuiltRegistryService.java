@@ -12,9 +12,9 @@ import org.quiltmc.qsl.registry.api.event.RegistryEvents;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CalledByReflection
 public class QuiltRegistryService implements RegistryService {
 
+	@CalledByReflection
 	public QuiltRegistryService() {
 		// need an explicit default constructor for the service loader to work
 	}

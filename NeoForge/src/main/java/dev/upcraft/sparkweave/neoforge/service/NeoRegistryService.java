@@ -10,9 +10,9 @@ import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.lang3.NotImplementedException;
 
-@CalledByReflection
 public class NeoRegistryService implements RegistryService {
 
+	@CalledByReflection
 	public NeoRegistryService() {
 		// need an explicit default constructor for the service loader to work
 	}
