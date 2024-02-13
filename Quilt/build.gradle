@@ -8,16 +8,6 @@ project.configurations.configureEach {
 	exclude(group: "net.fabricmc.fabric-api")
 }
 
-sourceSets {
-	testmod {
-		java {
-			compileClasspath += main.compileClasspath
-			runtimeClasspath += main.runtimeClasspath
-			runtimeClasspath += main.output
-		}
-	}
-}
-
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
@@ -32,6 +22,8 @@ dependencies {
 	}
 
 	compileOnly project(":Common")
+
+	testmodImplementation sourceSets.main.output
 	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
 	modImplementation libs.resourcefulconfig.fabric
@@ -53,12 +45,10 @@ loom {
 		"${mod_id}" {
 			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
 			sourceSet("main")
-			project(":Common").sourceSets.main
 		}
 
 		"${mod_id}-testmod" {
 			sourceSet("testmod")
-			project(":Common").sourceSets.testmod
 		}
 	}
 	if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {

@@ -17,16 +17,8 @@ dependencies {
 
 	implementation libs.resourcefulconfig
 	compileOnly "${libs.emi.asProvider().get()}:api"
-}
 
-sourceSets {
-	testmod {
-		java {
-			compileClasspath += main.compileClasspath
-			compileClasspath += main.output
-			runtimeClasspath += main.runtimeClasspath
-		}
-	}
+	testmodImplementation sourceSets.main.output
 }
 
 configurations {

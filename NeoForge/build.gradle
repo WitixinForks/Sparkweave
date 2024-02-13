@@ -6,7 +6,11 @@ jarJar.enable()
 
 dependencies {
 	implementation neoforge.neoforge
+
 	compileOnly project(":Common")
+
+	testmodImplementation sourceSets.main.output
+	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
 	implementation libs.resourcefulconfig.neoforge
 
