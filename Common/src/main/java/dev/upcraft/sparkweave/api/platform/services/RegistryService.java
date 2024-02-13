@@ -5,9 +5,11 @@ import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.RegistryVisitor;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import org.jetbrains.annotations.ApiStatus;
 
 public interface RegistryService {
 
+	@ApiStatus.Internal
 	RegistryService INSTANCE = Services.getService(RegistryService.class);
 
     static RegistryService get() {
