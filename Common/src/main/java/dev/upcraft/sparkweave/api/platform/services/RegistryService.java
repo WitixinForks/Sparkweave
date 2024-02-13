@@ -19,4 +19,7 @@ public interface RegistryService {
 	<T> RegistryHandler<T> createRegistryHandler(ResourceKey<Registry<T>> registryKey, String namespace);
 
 	<T> void visitRegistry(Registry<T> registry, RegistryVisitor<T> callback);
+
+	@ApiStatus.Internal
+	<T> void handleRegister(RegistryHandler<T> handler);
 }

@@ -31,4 +31,9 @@ public class QuiltRegistryService implements RegistryService {
 		var copy = registry.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().location(), Map.Entry::getValue));
 		copy.forEach(callback);
 	}
+
+	@Override
+	public <T> void handleRegister(RegistryHandler<T> handler) {
+		// NO-OP because registration happens anyway, we just need to load the class
+	}
 }

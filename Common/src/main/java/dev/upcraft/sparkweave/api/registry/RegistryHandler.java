@@ -7,10 +7,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public interface RegistryHandler<T> {
+public interface RegistryHandler<T> extends Consumer<RegistryService> {
 
 	static <T> RegistryHandler<T> create(ResourceKey<Registry<T>> registryKey, String namespace) {
 		return RegistryService.get().createRegistryHandler(registryKey, namespace);
@@ -25,4 +26,9 @@ public interface RegistryHandler<T> {
 	Stream<RegistrySupplier<? extends T>> stream();
 
 	ResourceKey<Registry<T>> registry();
+
+	@Override
+	default void accept(RegistryService registryService) {
+		registryService.handleRegister(this);
+	}
 }
