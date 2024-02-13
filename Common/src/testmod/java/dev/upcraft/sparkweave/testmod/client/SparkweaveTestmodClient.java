@@ -6,8 +6,10 @@ import net.minecraft.client.Minecraft;
 
 public class SparkweaveTestmodClient {
 
+	private static int ticks = 0;
+
 	public static void onClientTickStart(Minecraft client) {
-		if (client.level != null && client.level.getGameTime() % 100 == 0) {
+		if (client.level != null && ticks++ % 100 == 0) {
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
 					Debug.setColor(50 + x * 10, 0, 135 + z * 8);
