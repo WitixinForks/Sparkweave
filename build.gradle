@@ -32,7 +32,7 @@ subprojects {
 			vendor = JvmVendorSpec.MICROSOFT
 		}
 		withSourcesJar()
-//        withJavadocJar()
+        withJavadocJar()
 	}
 
 	javadoc {
