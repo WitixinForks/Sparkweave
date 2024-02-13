@@ -1,0 +1,68 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "${maven_group_id}",
+		"id": "${mod_id}-testmod",
+		"version": "${version}",
+		"metadata": {
+			"name": "${mod_display_name} TestMod",
+			"description": "Testmod for ${mod_display_name}",
+			"contributors": {
+				"Up": "Owner"
+			},
+			"contact": {
+				"homepage": "${homepage_url}",
+				"sources": "${sources_url}",
+				"issues": "${issues_url}"
+			},
+			"license": {
+				"id": "Custom License",
+				"name": "Custom License",
+				"url": "${license_url}"
+			},
+			"icon": "assets/${mod_id}-testmod/icon.png"
+		},
+		"entrypoints": {
+			"init": [
+				"dev.upcraft.sparkweave.testmod.quilt.entrypoint.Main"
+			],
+			"client_init": [
+				"dev.upcraft.sparkweave.testmod.quilt.entrypoint.Client"
+			],
+			"pre_launch": [
+			],
+			"quilt:game_test": [
+			]
+		},
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": ">=${quilt_loader_version}"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"mc-publish": {
+					"curseforge": "634179",
+					"modrinth": "qvIfYCYJ"
+				}
+			},
+			{
+				"id": "minecraft",
+				"versions": "=${minecraft_version}"
+			},
+			{
+				"id": "resourcefulconfig",
+				"mc-publish": {
+					"curseforge": "714059",
+					"modrinth": "M1953qlQ"
+				}
+			}
+		],
+		"intermediate_mappings": "net.fabricmc:intermediary"
+	},
+	"modmenu": {
+		"parent": "${mod_id}"
+	},
+	"mixin": [
+	]
+}

@@ -8,6 +8,16 @@ project.configurations.configureEach {
 	exclude(group: "net.fabricmc.fabric-api")
 }
 
+sourceSets {
+	testmod {
+		java {
+			compileClasspath += main.compileClasspath
+			runtimeClasspath += main.runtimeClasspath
+			runtimeClasspath += main.output
+		}
+	}
+}
+
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
@@ -22,6 +32,7 @@ dependencies {
 	}
 
 	compileOnly project(":Common")
+	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
 	modImplementation libs.resourcefulconfig.fabric
 
@@ -43,6 +54,11 @@ loom {
 			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
 			sourceSet("main")
 			project(":Common").sourceSets.main
+		}
+
+		"${mod_id}-testmod" {
+			sourceSet("testmod")
+			project(":Common").sourceSets.testmod
 		}
 	}
 	if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
@@ -72,6 +88,26 @@ loom {
 			}
 		}
 
+		testmodClient {
+			client()
+			setConfigName("Quilt Testmod Client")
+			ideConfigGenerated(true)
+			runDir("run/testmod")
+			source(sourceSets.testmod)
+
+			if (project.hasProperty('mc_uuid')) {
+				programArg("--uuid=${project.findProperty('mc_uuid')}")
+			}
+
+			if (project.hasProperty('mc_username')) {
+				programArg("--username=${project.findProperty('mc_username')}")
+			}
+
+			if (project.hasProperty('mc_java_agent_path')) {
+				vmArg("-javaagent:${project.findProperty('mc_java_agent_path')}")
+			}
+		}
+
 		server {
 			server()
 			setConfigName("Quilt Server")
@@ -85,6 +121,10 @@ tasks.withType(JavaCompile).configureEach {
 	source(project(":Common").sourceSets.main.allSource)
 }
 
+tasks.named("compileTestmodJava", JavaCompile).configure {
+	source(project(":Common").sourceSets.testmod.allSource)
+}
+
 tasks.withType(Javadoc).configureEach {
 	source(project(":Common").sourceSets.main.allJava)
 }
@@ -95,4 +135,8 @@ tasks.named("sourcesJar", Jar) {
 
 processResources {
 	from project(":Common").sourceSets.main.resources
+}
+
+processTestmodResources {
+	from project(":Common").sourceSets.testmod.resources
 }
