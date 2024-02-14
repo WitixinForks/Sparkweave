@@ -82,12 +82,13 @@ runs {
 	}
 
 	server {
-		programArguments.addAll 'nogui'
+		programArguments.add('nogui')
 		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
 	}
 
 	data {
-		programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+		// this must be strings ONLY, or neogradle will not generate run configs at all!
+		programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath)
 	}
 }
 
