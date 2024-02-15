@@ -57,15 +57,14 @@ runs {
 		systemProperty 'forge.logging.markers', 'REGISTRIES'
 		systemProperty 'forge.logging.console.level', 'debug'
 
-		workingDirectory project.file('run')
-
-		modSource project.sourceSets.main
-
 		dependencies {
 			runtime(libs.appdirs.get())
 		}
 	}
+
 	client {
+		modSource project.sourceSets.main
+		workingDirectory project.file('run')
 		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
 
 		if (project.hasProperty('mc_uuid')) {
@@ -82,11 +81,35 @@ runs {
 	}
 
 	server {
+		modSource project.sourceSets.main
+		workingDirectory project.file('run')
+
 		programArguments.add('nogui')
 		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
 	}
 
+	testmodClient {
+		configure runTypes.client
+		modSource project.sourceSets.testmod
+		workingDirectory project.file('run/testmod')
+		systemProperty 'neoforge.enabledGameTestNamespaces', "${project.mod_id}_testmod"
+
+		if (project.hasProperty('mc_uuid')) {
+			programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+		}
+
+		if (project.hasProperty('mc_username')) {
+			programArguments.add("--username=${project.findProperty('mc_username')}")
+		}
+
+		if (project.hasProperty('mc_java_agent_path')) {
+			jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
+		}
+	}
+
 	data {
+		modSource project.sourceSets.main
+		workingDirectory project.file('run')
 		// this must be strings ONLY, or neogradle will not generate run configs at all!
 		programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath)
 	}

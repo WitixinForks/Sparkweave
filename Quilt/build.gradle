@@ -47,7 +47,7 @@ loom {
 			sourceSet("main")
 		}
 
-		"${mod_id}-testmod" {
+		"${mod_id}_testmod" {
 			sourceSet("testmod")
 		}
 	}

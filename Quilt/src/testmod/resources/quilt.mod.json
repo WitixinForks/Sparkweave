@@ -2,7 +2,7 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "${maven_group_id}",
-		"id": "${mod_id}-testmod",
+		"id": "${mod_id}_testmod",
 		"version": "${version}",
 		"metadata": {
 			"name": "${mod_display_name} TestMod",
@@ -20,7 +20,7 @@
 				"name": "Custom License",
 				"url": "${license_url}"
 			},
-			"icon": "assets/${mod_id}-testmod/icon.png"
+			"icon": "assets/${mod_id}_testmod/icon.png"
 		},
 		"entrypoints": {
 			"init": [
@@ -38,6 +38,10 @@
 			{
 				"id": "quilt_loader",
 				"versions": ">=${quilt_loader_version}"
+			},
+			{
+				"id": "${mod_id}",
+				"versions": "=${version}"
 			},
 			{
 				"id": "quilted_fabric_api",

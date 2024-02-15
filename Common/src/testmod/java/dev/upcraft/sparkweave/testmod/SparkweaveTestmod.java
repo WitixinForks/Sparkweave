@@ -6,7 +6,7 @@ import dev.upcraft.sparkweave.testmod.init.TestItems;
 
 public class SparkweaveTestmod {
 
-	public static final String MODID = "sparkweave-testmod";
+	public static final String MODID = "sparkweave_testmod";
 
 	public static void init() {
 		var registryService = RegistryService.get();
