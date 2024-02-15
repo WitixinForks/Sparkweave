@@ -19,7 +19,7 @@ description = '''Testmod for ${mod_display_name}''' #mandatory (Supports multili
 "${mod_id}_testmod" = [
 	{ modId = "neoforge", mandatory = true, versionRange = "*", ordering = "NONE", side = "BOTH", mc-publish = { ignore = true } },
 	{ modId = "minecraft", mandatory = true, versionRange = "[${minecraft_version}]", ordering = "NONE", side = "BOTH" },
-	{ modid = "${mod_id}", mandatory = true, versionRange = "[${version}]" },
+	{ modId = "${mod_id}", mandatory = true, versionRange = "[${version}]" },
 	{ modId = "resourcefulconfig", mandatory = true, versionRange = "*", ordering = "NONE", side = "BOTH", mc-publish = { curseforge = "714059", modrinth = "M1953qlQ" } },
 ]
 
