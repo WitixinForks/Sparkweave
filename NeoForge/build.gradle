@@ -91,6 +91,7 @@ runs {
 	testmodClient {
 		configure runTypes.client
 		modSource project.sourceSets.testmod
+		modSource project.sourceSets.main
 		workingDirectory project.file('run/testmod')
 		systemProperty 'neoforge.enabledGameTestNamespaces', "${project.mod_id}_testmod"
 
