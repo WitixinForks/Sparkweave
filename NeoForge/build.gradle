@@ -52,6 +52,7 @@ subsystems {
 	}
 }
 
+sourceSets.testmod.runs.modIdentifier "testMod"
 runs {
 	configureEach {
 		systemProperty 'forge.logging.markers', 'REGISTRIES'
@@ -118,14 +119,11 @@ runs {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-// NeoGradle compiles the game, but we don't want to add our common code to the game's code
-Spec<Task> notNeoTask = { Task it -> !it.name.startsWith("neo") } as Spec<Task>
-
-tasks.withType(JavaCompile).matching(notNeoTask).configureEach {
+tasks.named("compileJava", JavaCompile) {
 	source(project(":Common").sourceSets.main.allSource)
 }
 
-tasks.withType(Javadoc).matching(notNeoTask).configureEach {
+tasks.named("javadoc", Javadoc) {
 	source(project(":Common").sourceSets.main.allJava)
 }
 
@@ -133,8 +131,16 @@ tasks.named("sourcesJar", Jar) {
 	from(project(":Common").sourceSets.main.allSource)
 }
 
-tasks.withType(ProcessResources).matching(notNeoTask).configureEach {
+tasks.named("compileTestmodJava", JavaCompile) {
+	source(project(":Common").sourceSets.testmod.allJava)
+}
+
+processResources {
 	from project(":Common").sourceSets.main.resources
+}
+
+processTestmodResources {
+	from project(":Common").sourceSets.testmod.resources
 }
 
 publishing {
