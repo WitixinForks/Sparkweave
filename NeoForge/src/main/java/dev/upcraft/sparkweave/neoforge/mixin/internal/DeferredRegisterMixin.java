@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryBuilder;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +19,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -31,6 +34,9 @@ public abstract class DeferredRegisterMixin<T> {
 
 	@Shadow
 	public abstract <I extends T> DeferredHolder<T, I> register(String name, Supplier<? extends I> sup);
+
+	@Shadow
+	public abstract Registry<T> makeRegistry(Consumer<RegistryBuilder<T>> consumer);
 
 	@SuppressWarnings("unchecked")
 	public <S extends T> RegistrySupplier<S> handler$register(String name, Supplier<S> factory) {
@@ -54,4 +60,14 @@ public abstract class DeferredRegisterMixin<T> {
 
 	@Invoker("getRegistryKey")
 	public abstract ResourceKey<Registry<T>> handler$registry();
+
+	public Registry<T> handler$createNewRegistry(boolean synced, @Nullable ResourceLocation defaultEntry) {
+		return this.makeRegistry(builder -> {
+			if(defaultEntry != null) {
+				builder.defaultKey(defaultEntry);
+			}
+
+			builder.sync(synced);
+		});
+	}
 }

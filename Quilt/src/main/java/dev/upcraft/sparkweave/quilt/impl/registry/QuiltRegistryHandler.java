@@ -5,9 +5,12 @@ import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.RegistryHelper;
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -66,5 +69,14 @@ public class QuiltRegistryHandler<T> implements RegistryHandler<T> {
 	@Override
 	public ResourceKey<Registry<T>> registry() {
 		return registryKey;
+	}
+
+	@Override
+	public Registry<T> createNewRegistry(boolean sync, @Nullable ResourceLocation defaultEntry) {
+		var builder = defaultEntry != null ? FabricRegistryBuilder.createDefaulted(this.registryKey, defaultEntry) : FabricRegistryBuilder.createSimple(this.registryKey);
+		if(sync) {
+			builder.attribute(RegistryAttribute.SYNCED);
+		}
+		return builder.buildAndRegister();
 	}
 }
