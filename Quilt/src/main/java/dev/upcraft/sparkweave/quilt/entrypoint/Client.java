@@ -1,8 +1,16 @@
 package dev.upcraft.sparkweave.quilt.entrypoint;
 
 import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
-import dev.upcraft.sparkweave.quilt.client.command.ClientRootCommand;
+import dev.upcraft.sparkweave.api.client.event.*;
 import dev.upcraft.sparkweave.api.client.render.DebugRenderer;
+import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
+import dev.upcraft.sparkweave.client.event.RegisterItemPropertiesEventImpl;
+import dev.upcraft.sparkweave.entrypoint.EntrypointHelper;
+import dev.upcraft.sparkweave.quilt.client.command.ClientRootCommand;
+import dev.upcraft.sparkweave.quilt.impl.registry.RegisterBlockEntityRenderersEventImpl;
+import dev.upcraft.sparkweave.quilt.impl.registry.RegisterEntityRenderersEventImpl;
+import dev.upcraft.sparkweave.quilt.impl.registry.RegisterMenuScreensEventImpl;
+import dev.upcraft.sparkweave.quilt.impl.registry.RegisterParticleFactoriesEventImpl;
 import dev.upcraft.sparkweave.validation.TranslationChecker;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import org.quiltmc.loader.api.ModContainer;
@@ -23,6 +31,14 @@ public class Client implements ClientModInitializer {
 			}
 		});
 		ClientResourceLoaderEvents.END_PACK_RELOAD.register(context -> TranslationChecker.validate());
+
+		EntrypointHelper.fireEntrypoints(ClientEntryPoint.class, ClientEntryPoint::onInitializeClient);
+
+		RegisterBlockEntityRenderersEvent.EVENT.invoker().registerBlockEntityRenderers(new RegisterBlockEntityRenderersEventImpl());
+		RegisterEntityRenderersEvent.EVENT.invoker().registerEntityRenderers(new RegisterEntityRenderersEventImpl());
+		RegisterItemPropertiesEvent.EVENT.invoker().registerItemProperties(new RegisterItemPropertiesEventImpl());
+		RegisterMenuScreensEvent.EVENT.invoker().registerMenuScreens(new RegisterMenuScreensEventImpl());
+		RegisterParticleFactoriesEvent.EVENT.invoker().registerParticleFactories(new RegisterParticleFactoriesEventImpl());
 
 //		//TODO debug
 //		var kb = new KeyMapping("key.sparkweave.debug", GLFW.GLFW_KEY_J, "key.categories.misc");

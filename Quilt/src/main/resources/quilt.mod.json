@@ -24,7 +24,8 @@
 		},
 		"entrypoints": {
 			"init": "dev.upcraft.sparkweave.quilt.entrypoint.Main",
-			"client_init": "dev.upcraft.sparkweave.quilt.entrypoint.Client"
+			"client_init": "dev.upcraft.sparkweave.quilt.entrypoint.Client",
+			"server_init": "dev.upcraft.sparkweave.quilt.entrypoint.DedicatedServer"
 		},
 		"depends": [
 			{

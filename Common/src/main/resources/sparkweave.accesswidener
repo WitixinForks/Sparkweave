@@ -1,3 +1,14 @@
 accessWidener v1 named
 
 accessible field net/minecraft/client/renderer/LevelRenderer renderBuffers Lnet/minecraft/client/renderer/RenderBuffers;
+
+# RegisterMenuScreensEvent
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+
+# RegisterParticleFactoriesEvent
+accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+
+# RegisterItemPropertiesEvent
+accessible method net/minecraft/client/renderer/item/ItemProperties registerGeneric (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;
+accessible method net/minecraft/client/renderer/item/ItemProperties registerCustomModelData (Lnet/minecraft/client/renderer/item/ItemPropertyFunction;)V
+accessible method net/minecraft/client/renderer/item/ItemProperties register (Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
