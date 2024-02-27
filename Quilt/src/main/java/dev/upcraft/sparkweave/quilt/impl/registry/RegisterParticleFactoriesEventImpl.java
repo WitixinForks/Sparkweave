@@ -2,7 +2,6 @@ package dev.upcraft.sparkweave.quilt.impl.registry;
 
 import dev.upcraft.sparkweave.api.client.event.RegisterParticleFactoriesEvent;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -17,7 +16,7 @@ public class RegisterParticleFactoriesEventImpl implements RegisterParticleFacto
 	}
 
 	@Override
-	public <T extends ParticleOptions> void registerSpriteSet(Supplier<ParticleType<T>> type, ParticleEngine.SpriteParticleRegistration<T> registration) {
+	public <T extends ParticleOptions> void registerSpriteSet(Supplier<ParticleType<T>> type, SpriteParticleRegistration<T> registration) {
 		ParticleFactoryRegistry.getInstance().register(type.get(), registration::create);
 	}
 }

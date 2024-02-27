@@ -29,7 +29,7 @@ public class ClientModBusRegistryEvents {
 		});
 	}
 
-	private static <MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void registerMenuScreen(Supplier<MenuType<? extends MENU>> type, MenuScreens.ScreenConstructor<MENU, SCREEN> factory) {
+	private static <MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void registerMenuScreen(Supplier<MenuType<? extends MENU>> type, RegisterMenuScreensEvent.ScreenConstructor<MENU, SCREEN> factory) {
 		MenuScreens.register(type.get(), factory);
 	}
 

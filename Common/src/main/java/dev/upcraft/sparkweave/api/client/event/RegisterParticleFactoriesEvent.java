@@ -22,7 +22,7 @@ public interface RegisterParticleFactoriesEvent {
 	default <T extends ParticleOptions> void registerSprite(Supplier<ParticleType<T>> type, ParticleProvider.Sprite<T> sprite) {
 		registerSpriteSet(type, spriteSet -> (t, level, x, y, z, velocityX, velocityY, velocityZ) -> {
 			var particle = sprite.createParticle(t, level, x, y, z, velocityX, velocityY, velocityZ);
-			if(particle != null) {
+			if (particle != null) {
 				particle.pickSprite(spriteSet);
 			}
 
@@ -30,10 +30,13 @@ public interface RegisterParticleFactoriesEvent {
 		});
 	}
 
-	<T extends ParticleOptions> void registerSpriteSet(Supplier<ParticleType<T>> type, ParticleEngine.SpriteParticleRegistration<T> registration);
+	<T extends ParticleOptions> void registerSpriteSet(Supplier<ParticleType<T>> type, SpriteParticleRegistration<T> registration);
 
 	@FunctionalInterface
 	interface Callback {
 		void registerParticleFactories(RegisterParticleFactoriesEvent event);
+	}
+
+	interface SpriteParticleRegistration<T extends ParticleOptions> extends ParticleEngine.SpriteParticleRegistration<T> {
 	}
 }
