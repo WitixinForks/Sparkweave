@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
+import java.util.function.Supplier;
+
 @SuppressWarnings("deprecation")
 public interface RegisterItemPropertiesEvent {
 
@@ -16,6 +18,10 @@ public interface RegisterItemPropertiesEvent {
 
 	default void registerCustomModelData(ItemPropertyFunction property) {
 		ItemProperties.registerCustomModelData(property);
+	}
+
+	default <T extends Item> void register(Supplier<T> item, ResourceLocation id, ClampedItemPropertyFunction property) {
+		register(item.get(), id, property);
 	}
 
 	default void register(Item item, ResourceLocation id, ClampedItemPropertyFunction property) {
