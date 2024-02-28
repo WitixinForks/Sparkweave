@@ -16,10 +16,10 @@ public interface RegisterParticleFactoriesEvent {
 		}
 	});
 
-	<T extends ParticleOptions> void registerSpecial(Supplier<ParticleType<T>> type, ParticleProvider<T> provider);
+	<OPT extends ParticleOptions, TYPE extends ParticleType<OPT>> void registerSpecial(Supplier<TYPE> type, ParticleProvider<OPT> provider);
 
 	// copying from ParticleEngine because fabric does not expose this method
-	default <T extends ParticleOptions> void registerSprite(Supplier<ParticleType<T>> type, ParticleProvider.Sprite<T> sprite) {
+	default <OPT extends ParticleOptions, TYPE extends ParticleType<OPT>> void registerSprite(Supplier<TYPE> type, ParticleProvider.Sprite<OPT> sprite) {
 		registerSpriteSet(type, spriteSet -> (t, level, x, y, z, velocityX, velocityY, velocityZ) -> {
 			var particle = sprite.createParticle(t, level, x, y, z, velocityX, velocityY, velocityZ);
 			if (particle != null) {
@@ -30,7 +30,7 @@ public interface RegisterParticleFactoriesEvent {
 		});
 	}
 
-	<T extends ParticleOptions> void registerSpriteSet(Supplier<ParticleType<T>> type, SpriteParticleRegistration<T> registration);
+	<OPT extends ParticleOptions, TYPE extends ParticleType<OPT>> void registerSpriteSet(Supplier<TYPE> type, SpriteParticleRegistration<OPT> registration);
 
 	@FunctionalInterface
 	interface Callback {

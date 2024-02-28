@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public interface RegisterBlockEntityRenderersEvent {
 
-	<T extends BlockEntity> void registerRenderer(Supplier<BlockEntityType<? extends T>> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider);
+	<T extends BlockEntity> void registerRenderer(Supplier<BlockEntityType<T>> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider);
 
 	Event<Callback> EVENT = Event.create(Callback.class, callbacks -> event -> {
 		for (Callback callback : callbacks) {

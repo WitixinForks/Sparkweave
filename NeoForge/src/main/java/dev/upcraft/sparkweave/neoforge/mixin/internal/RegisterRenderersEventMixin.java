@@ -29,11 +29,11 @@ public abstract class RegisterRenderersEventMixin implements RegisterEntityRende
 	@Shadow
 	public abstract <T extends Entity> void registerEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider);
 
-	public <T extends BlockEntity> void registerBlockEntityRenderer$registerRenderer(Supplier<BlockEntityType<? extends T>> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider) {
+	public <T extends BlockEntity> void registerBlockEntityRenderer$registerRenderer(Supplier<BlockEntityType<T>> blockEntityType, BlockEntityRendererProvider<T> blockEntityRendererProvider) {
 		this.registerBlockEntityRenderer(blockEntityType.get(), blockEntityRendererProvider);
 	}
 
-	public <T extends Entity> void registerEntityRenderers$registerRenderer(Supplier<EntityType<? extends T>> entityType, EntityRendererProvider<T> entityRendererProvider) {
+	public <T extends Entity> void registerEntityRenderers$registerRenderer(Supplier<EntityType<T>> entityType, EntityRendererProvider<T> entityRendererProvider) {
 		this.registerEntityRenderer(entityType.get(), entityRendererProvider);
 	}
 }

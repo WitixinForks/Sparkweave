@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 public class RegisterEntityRenderersEventImpl implements RegisterEntityRenderersEvent {
 
 	@Override
-	public <T extends Entity> void registerRenderer(Supplier<EntityType<? extends T>> entityType, EntityRendererProvider<T> entityRendererProvider) {
+	public <T extends Entity> void registerRenderer(Supplier<EntityType<T>> entityType, EntityRendererProvider<T> entityRendererProvider) {
 		EntityRendererRegistry.register(entityType.get(), entityRendererProvider);
 	}
 }
