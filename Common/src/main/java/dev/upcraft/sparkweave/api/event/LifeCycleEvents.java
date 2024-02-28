@@ -4,7 +4,7 @@ import net.minecraft.server.MinecraftServer;
 
 public class LifeCycleEvents {
 
-	public static final Event<ServerStarting> SERVER_STARTING = dev.upcraft.sparkweave.api.event.Event.create(ServerStarting.class, listeners -> server -> {
+	public static final Event<ServerStarting> SERVER_STARTING = Event.create(ServerStarting.class, listeners -> server -> {
 		for (ServerStarting listener : listeners) {
 			listener.onServerStarting(server);
 		}
