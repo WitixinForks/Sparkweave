@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class RegisterMenuScreensEventImpl implements RegisterMenuScreensEvent {
 
 	@Override
-	public <MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void register(Supplier<MenuType<? extends MENU>> menuType, ScreenConstructor<MENU, SCREEN> screenFactory) {
+	public <MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void register(Supplier<MenuType<MENU>> menuType, ScreenConstructor<MENU, SCREEN> screenFactory) {
 		MenuScreens.register(menuType.get(), screenFactory);
 	}
 }

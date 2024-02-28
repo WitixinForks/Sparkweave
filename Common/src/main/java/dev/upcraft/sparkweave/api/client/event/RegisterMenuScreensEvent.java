@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public interface RegisterMenuScreensEvent {
 
-	<MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void register(Supplier<MenuType<? extends MENU>> menuType, ScreenConstructor<MENU, SCREEN> screenFactory);
+	<MENU extends AbstractContainerMenu, SCREEN extends Screen & MenuAccess<MENU>> void register(Supplier<MenuType<MENU>> menuType, ScreenConstructor<MENU, SCREEN> screenFactory);
 
 	Event<Callback> EVENT = Event.create(Callback.class, callbacks -> event -> {
 		for (Callback callback : callbacks) {
