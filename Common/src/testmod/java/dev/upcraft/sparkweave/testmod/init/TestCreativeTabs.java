@@ -15,7 +15,7 @@ public class TestCreativeTabs {
 	public static final RegistrySupplier<CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeTabHelper.newBuilder()
 		.title(Component.translatable("itemGroup.sparkweave_testmod.items"))
 		.icon(() -> TestItems.TEST_ITEM.get().getDefaultInstance())
-		.displayItems((itemDisplayParameters, output) -> CreativeTabHelper.addRegistryEntries(output, TestItems.ITEMS))
+		.displayItems((itemDisplayParameters, output) -> CreativeTabHelper.addRegistryEntries(itemDisplayParameters, output, TestItems.ITEMS))
 		.build()
 	);
 }
