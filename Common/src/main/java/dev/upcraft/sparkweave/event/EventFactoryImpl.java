@@ -3,6 +3,7 @@ package dev.upcraft.sparkweave.event;
 import com.google.common.base.Preconditions;
 import dev.upcraft.sparkweave.api.event.Event;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
@@ -16,12 +17,13 @@ public class EventFactoryImpl<T> implements Event<T> {
 
 	private final Class<T> type;
 	private final Function<T[], T> invokerFactory;
-	private Object[] listeners = new Object[0];
+	private T[] listeners;
 	private T invoker;
 
 	private EventFactoryImpl(Class<T> type, Function<T[], T> invokerFactory) {
 		this.type = type;
 		this.invokerFactory = invokerFactory;
+		this.listeners = makeArray(0);
 		setupInvoker();
 	}
 
@@ -53,14 +55,18 @@ public class EventFactoryImpl<T> implements Event<T> {
 			}
 		}
 
-		listeners = Arrays.stream(listeners).filter(Objects::nonNull).toArray();
+		listeners = Arrays.stream(listeners).filter(Objects::nonNull).toArray(this::makeArray);
 
 		setupInvoker();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void setupInvoker() {
-		invoker = invokerFactory.apply((T[]) listeners);
+		invoker = invokerFactory.apply(listeners);
+	}
+
+	@SuppressWarnings("unchecked")
+	private T[] makeArray(int size) {
+		return (T[]) Array.newInstance(type, size);
 	}
 
 	@Override
