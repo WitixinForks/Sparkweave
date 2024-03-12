@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class NeoPlatformService extends BasePlatformService implements PlatformService {
 
@@ -86,6 +87,12 @@ public class NeoPlatformService extends BasePlatformService implements PlatformS
 	@Override
 	public Optional<ModContainer> getModContainer(String modid) {
 		return ModList.get().getModContainerById(modid).map(NeoforgeModContainer::of);
+	}
+
+	@Override
+	public List<ModContainer> getActiveMods() {
+		// can't use Stream#toList() because java compiler is dumb :(
+		return ModList.get().getSortedMods().stream().map(NeoforgeModContainer::of).collect(Collectors.toList());
 	}
 
 	@Override

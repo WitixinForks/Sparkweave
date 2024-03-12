@@ -17,6 +17,10 @@ public class NeoForgeModMetadata implements ModMetadata {
 		delegate = modContainer.getModInfo();
     }
 
+	public IModInfo modInfo() {
+		return delegate;
+	}
+
 	@Override
 	public String id() {
 		return delegate.getModId();

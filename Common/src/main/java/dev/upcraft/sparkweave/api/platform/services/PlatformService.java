@@ -22,6 +22,8 @@ public interface PlatformService {
 
 	Optional<ModContainer> getModContainer(String modid);
 
+	List<ModContainer> getActiveMods();
+
 	RuntimeEnvironmentType getEnvironmentType();
 
 	List<String> getLaunchArguments(boolean hideSensitive);

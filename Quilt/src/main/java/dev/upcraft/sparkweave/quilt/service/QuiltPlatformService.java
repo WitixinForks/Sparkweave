@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class QuiltPlatformService extends BasePlatformService implements PlatformService {
 
@@ -80,6 +81,12 @@ public class QuiltPlatformService extends BasePlatformService implements Platfor
 	@Override
 	public Optional<ModContainer> getModContainer(String modid) {
 		return MOD_CONTAINERS.computeIfAbsent(modid, key -> QuiltLoader.getModContainer(key).map(QuiltModContainer::of));
+	}
+
+	@Override
+	public List<ModContainer> getActiveMods() {
+		// can't use Stream#toList() because java compiler is dumb :(
+		return QuiltLoader.getAllMods().stream().map(QuiltModContainer::of).collect(Collectors.toList());
 	}
 
 	@Override
