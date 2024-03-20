@@ -10,9 +10,9 @@ import dev.upcraft.sparkweave.entrypoint.EntrypointHelper;
 import dev.upcraft.sparkweave.logging.SparkweaveLogging;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -20,8 +20,8 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 @Mod(SparkweaveMod.MODID)
 public class Main {
 
-	public Main() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+	public Main(IEventBus bus) {
+		bus.register(this);
 
 		EntrypointHelper.fireEntrypoints(MainEntryPoint.class, MainEntryPoint::onInitialize);
 
