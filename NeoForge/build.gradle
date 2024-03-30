@@ -20,12 +20,6 @@ dependencies {
 		jarJar.ranged(it, "[${libs.versions.appdirs.get()},)")
 	}
 
-	implementation libs.mixin.extras
-	jarJar(libs.mixin.extras) {
-		transitive = false
-		jarJar.ranged(it, "[${libs.versions.mixin.extras.get()},)")
-	}
-
 //	compileOnly "${libs.emi.neoforge.get()}:api"
 //	runtimeOnly libs.emi.neoforge
 }
