@@ -8,12 +8,6 @@ project.configurations.configureEach {
 	exclude(group: "net.fabricmc.fabric-api")
 }
 
-repositories {
-	maven {
-		url = "https://maven.oroarmor.com"
-	}
-}
-
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
