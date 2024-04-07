@@ -12,6 +12,7 @@ public class SparkweaveCommandRoot {
 		var root = Commands.literal(SparkweaveMod.MODID);
 		var debug = Commands.literal("debug").requires(src -> src.hasPermission(Commands.LEVEL_ADMINS));
 
+		DumpRecipesCommand.register(debug, buildContext);
 		DumpRegistryCommand.register(debug);
 		DumpTagsCommand.register(debug);
 

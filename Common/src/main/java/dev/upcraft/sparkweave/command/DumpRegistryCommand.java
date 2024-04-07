@@ -1,5 +1,6 @@
 package dev.upcraft.sparkweave.command;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -64,21 +65,6 @@ public class DumpRegistryCommand {
 		return registries.size();
 	}
 
-	private static void saveRegistryToFile(Registry<?> registry, Path outputDir) throws CommandSyntaxException {
-		var outputFile = outputDir.resolve(registry.key().location().getNamespace()).resolve(registry.key().location().getPath() + ".csv");
-		try {
-			Files.createDirectories(outputFile.getParent());
-			try (var stream = Files.newOutputStream(outputFile)) {
-				try (var writer = CSVWriter.create(stream, "namespace", "path")) {
-					registry.keySet().stream().sorted().forEachOrdered(key -> writer.addRow(key.getNamespace(), key.getPath()));
-				}
-			}
-		} catch (IOException e) {
-			SparkweaveLogging.getLogger().error("Failed to write registry dump for {}", registry.key().location(), e);
-			throw CommandHelper.IO_EXCEPTION.create(e.getMessage());
-		}
-	}
-
 	private static int dumpRegistry(CommandContext<CommandSourceStack> ctx, Registry<?> registry) throws CommandSyntaxException {
 		var player = ctx.getSource().getPlayerOrException();
 
@@ -98,6 +84,21 @@ public class DumpRegistryCommand {
 			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_registries.success", registry.key().location()), true);
 		}
 
-		return 1;
+		return Command.SINGLE_SUCCESS;
+	}
+
+	private static void saveRegistryToFile(Registry<?> registry, Path outputDir) throws CommandSyntaxException {
+		var outputFile = outputDir.resolve(registry.key().location().getNamespace()).resolve(registry.key().location().getPath() + ".csv");
+		try {
+			Files.createDirectories(outputFile.getParent());
+			try (var stream = Files.newOutputStream(outputFile)) {
+				try (var writer = CSVWriter.create(stream, "namespace", "path")) {
+					registry.keySet().stream().sorted().forEachOrdered(key -> writer.addRow(key.getNamespace(), key.getPath()));
+				}
+			}
+		} catch (IOException e) {
+			SparkweaveLogging.getLogger().error("Failed to write registry dump for {}", registry.key().location(), e);
+			throw CommandHelper.IO_EXCEPTION.create(e.getMessage());
+		}
 	}
 }

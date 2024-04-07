@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -68,6 +69,28 @@ public class DumpTagsCommand {
 		return registries.size();
 	}
 
+	private static int dumpTags(CommandContext<CommandSourceStack> ctx, Registry<?> registry) throws CommandSyntaxException {
+		var player = ctx.getSource().getPlayerOrException();
+
+		var dir = Services.PLATFORM.getGameDir().resolve("sparkweave").resolve("tag_export");
+		saveTags(registry, dir);
+
+		if (ctx.getSource().getServer().isSingleplayerOwner(player.getGameProfile())) {
+			var resolvedDir = dir.resolve(registry.key().location().getNamespace()).resolve(registry.key().location().getPath()).toString();
+			var path = Component.literal(resolvedDir).withStyle(style -> style
+				.applyFormats(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)
+				.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.sparkweave.open_folder")))
+				.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, resolvedDir))
+			);
+
+			//TODO directly send to client to bypass message click event filtering
+			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_tags.success_path", registry.key().location(), path), true);
+		} else {
+			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_tags.success", registry.key().location()), true);
+		}
+		return Command.SINGLE_SUCCESS;
+	}
+
 	private static void saveTags(Registry<?> registry, Path dir) throws CommandSyntaxException {
 		Path rootDir = dir.resolve(registry.key().location().getNamespace()).resolve(registry.key().location().getPath());
 
@@ -92,27 +115,5 @@ public class DumpTagsCommand {
 				throw CommandHelper.IO_EXCEPTION.create(e);
 			}
 		}
-	}
-
-	private static int dumpTags(CommandContext<CommandSourceStack> ctx, Registry<?> registry) throws CommandSyntaxException {
-		var player = ctx.getSource().getPlayerOrException();
-
-		var dir = Services.PLATFORM.getGameDir().resolve("sparkweave").resolve("tag_export");
-		saveTags(registry, dir);
-
-		if (ctx.getSource().getServer().isSingleplayerOwner(player.getGameProfile())) {
-			var resolvedDir = dir.resolve(registry.key().location().getNamespace()).resolve(registry.key().location().getPath()).toString();
-			var path = Component.literal(resolvedDir).withStyle(style -> style
-				.applyFormats(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)
-				.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.sparkweave.open_folder")))
-				.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, resolvedDir))
-			);
-
-			//TODO directly send to client to bypass message click event filtering
-			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_tags.success_path", registry.key().location(), path), true);
-		} else {
-			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_tags.success", registry.key().location()), true);
-		}
-		return 0;
 	}
 }

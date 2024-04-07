@@ -31,17 +31,17 @@ public class CSVWriter implements AutoCloseable {
 		printRow(columns);
 	}
 
-	public CSVWriter addRow(String... values) {
+	public CSVWriter addRow(Object... values) {
 		Preconditions.checkArgument(values.length == columns.length, "expected %s columns but got %s", columns.length, values.length);
 		Preconditions.checkArgument(!hasRowBuilder.get(), "already building row");
 		printRow(values);
 		return this;
 	}
 
-	private void printRow(String[] row) {
+	private void printRow(Object[] row) {
 		StringJoiner result = new StringJoiner(separator);
-		for (String entry : row) {
-			result.add(quoteCSV(entry, separator));
+		for (Object entry : row) {
+			result.add(quoteCSV(String.valueOf(entry), separator));
 		}
 		output.println(result);
 	}
