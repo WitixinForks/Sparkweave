@@ -1,3 +1,10 @@
 {
+  "argument.sparkweave.registries.not_found": "Registry not found: %s",
+  "chat.sparkweave.open_folder": "Click to view in File Explorer",
+  "commands.sparkweave.debug.dump_registries.io_exception": "An IO error occurred while dumping registries: %s",
+  "commands.sparkweave.debug.dump_registries.success": "Successfully exported registry %s",
+  "commands.sparkweave.debug.dump_registries.success_path": "Successfully exported registry %s to %s",
+  "commands.sparkweave.debug.dump_registries.multi_success": "Successfully exported %s registries",
+  "commands.sparkweave.debug.dump_registries.multi_success_path": "Successfully exported %s registries to %s",
   "screen.sparkweave.consent.title": "Consent Required"
 }
