@@ -3,13 +3,13 @@ package dev.upcraft.sparkweave.command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import dev.upcraft.sparkweave.api.command.argument.RegistryArgumentHelper;
+import dev.upcraft.sparkweave.SparkweaveMod;
+import dev.upcraft.sparkweave.api.command.CommandHelper;
+import dev.upcraft.sparkweave.api.command.argument.RegistryArgumentType;
 import dev.upcraft.sparkweave.api.platform.Services;
 import dev.upcraft.sparkweave.api.serialization.CSVWriter;
 import dev.upcraft.sparkweave.logging.SparkweaveLogging;
 import net.minecraft.ChatFormatting;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
@@ -24,17 +24,16 @@ import java.nio.file.Path;
 
 public class DumpRegistryCommand {
 
-	private static final DynamicCommandExceptionType IO_EXCEPTION = new DynamicCommandExceptionType(ex -> Component.translatable("commands.sparkweave.debug.dump_registries.io_exception", ex));
-
-	public static void register(LiteralArgumentBuilder<CommandSourceStack> $, CommandBuildContext buildContext) {
+	public static void register(LiteralArgumentBuilder<CommandSourceStack> $) {
 		$.then(Commands.literal("dump_registries")
+			.requires(src -> src.hasPermission(Commands.LEVEL_OWNERS))
 			.executes(DumpRegistryCommand::dumpAllRegistries)
-			.then(Commands.argument("registry", RegistryArgumentHelper.registryArgument())
-				.suggests(RegistryArgumentHelper::suggestRegistries)
-				.executes(ctx -> dumpRegistry(ctx, RegistryArgumentHelper.getRegistry(ctx, "registry")))
+			.then(Commands.argument("registry", RegistryArgumentType.registry())
+				.executes(ctx -> dumpRegistry(ctx, RegistryArgumentType.getRegistry(ctx, "registry")))
 			)
 			.then(Commands.literal("all")
-				.executes(DumpRegistryCommand::dumpAllRegistries))
+				.executes(DumpRegistryCommand::dumpAllRegistries)
+			)
 		);
 	}
 
@@ -42,7 +41,7 @@ public class DumpRegistryCommand {
 		var player = ctx.getSource().getPlayerOrException();
 		var registryAccess = ctx.getSource().getServer().registries().compositeAccess();
 		var registries = registryAccess.listRegistries().toList();
-		var dir = Services.PLATFORM.getGameDir().resolve("sparkweave").resolve("registry_export");
+		var dir = Services.PLATFORM.getGameDir().resolve(SparkweaveMod.MODID).resolve("registry_export");
 
 		for (ResourceKey<? extends Registry<?>> registryKey : registries) {
 			var registry = registryAccess.registry(registryKey).orElseThrow();
@@ -76,7 +75,7 @@ public class DumpRegistryCommand {
 			}
 		} catch (IOException e) {
 			SparkweaveLogging.getLogger().error("Failed to write registry dump for {}", registry.key().location(), e);
-			throw IO_EXCEPTION.create(e.getMessage());
+			throw CommandHelper.IO_EXCEPTION.create(e.getMessage());
 		}
 	}
 

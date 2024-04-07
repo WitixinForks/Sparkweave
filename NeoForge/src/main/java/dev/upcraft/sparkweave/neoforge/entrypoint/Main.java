@@ -5,9 +5,11 @@ import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
 import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
 import dev.upcraft.sparkweave.api.entrypoint.DedicatedServerEntryPoint;
 import dev.upcraft.sparkweave.api.entrypoint.MainEntryPoint;
+import dev.upcraft.sparkweave.api.platform.services.RegistryService;
 import dev.upcraft.sparkweave.api.registry.block.BlockItemProvider;
 import dev.upcraft.sparkweave.entrypoint.EntrypointHelper;
 import dev.upcraft.sparkweave.logging.SparkweaveLogging;
+import dev.upcraft.sparkweave.registry.SparkweaveCommandArgumentTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
@@ -23,11 +25,16 @@ public class Main {
 	public Main(IEventBus bus) {
 		bus.register(this);
 
+		var helper = RegistryService.get();
+		SparkweaveCommandArgumentTypes.ARGUMENT_TYPES.accept(helper);
+
 		EntrypointHelper.fireEntrypoints(MainEntryPoint.class, MainEntryPoint::onInitialize);
 
 		switch (FMLEnvironment.dist) {
-			case CLIENT -> EntrypointHelper.fireEntrypoints(ClientEntryPoint.class, ClientEntryPoint::onInitializeClient);
-			case DEDICATED_SERVER -> EntrypointHelper.fireEntrypoints(DedicatedServerEntryPoint.class, DedicatedServerEntryPoint::onInitializeServer);
+			case CLIENT ->
+				EntrypointHelper.fireEntrypoints(ClientEntryPoint.class, ClientEntryPoint::onInitializeClient);
+			case DEDICATED_SERVER ->
+				EntrypointHelper.fireEntrypoints(DedicatedServerEntryPoint.class, DedicatedServerEntryPoint::onInitializeServer);
 		}
 
 		SparkweaveLogging.getLogger().debug("System initialized!");
@@ -35,9 +42,9 @@ public class Main {
 
 	@SubscribeEvent
 	public void processBlockItems(RegisterEvent event) {
-		if(event.getRegistryKey() == Registries.ITEM) {
+		if (event.getRegistryKey() == Registries.ITEM) {
 			BuiltInRegistries.BLOCK.entrySet().forEach(entry -> {
-				if(entry.getValue() instanceof BlockItemProvider provider) {
+				if (entry.getValue() instanceof BlockItemProvider provider) {
 					event.register(Registries.ITEM, entry.getKey().location(), provider::createItem);
 				}
 			});

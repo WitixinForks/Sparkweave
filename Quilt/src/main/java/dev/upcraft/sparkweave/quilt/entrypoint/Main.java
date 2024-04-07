@@ -7,6 +7,7 @@ import dev.upcraft.sparkweave.api.platform.services.RegistryService;
 import dev.upcraft.sparkweave.api.registry.block.BlockItemProvider;
 import dev.upcraft.sparkweave.entrypoint.EntrypointHelper;
 import dev.upcraft.sparkweave.logging.SparkweaveLogging;
+import dev.upcraft.sparkweave.registry.SparkweaveCommandArgumentTypes;
 import dev.upcraft.sparkweave.scheduler.ScheduledTaskQueue;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,6 +32,9 @@ public class Main implements ModInitializer {
 		ServerLifecycleEvents.STOPPED.register(server -> ScheduledTaskQueue.onServerStopped());
 		ServerTickEvents.START.register(server -> ScheduledTaskQueue.onServerTick());
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, environment) -> CommandEvents.REGISTER.invoker().registerCommands(dispatcher, buildContext, environment));
+
+		var service = RegistryService.get();
+		SparkweaveCommandArgumentTypes.ARGUMENT_TYPES.accept(service);
 
 		EntrypointHelper.fireEntrypoints(MainEntryPoint.class, MainEntryPoint::onInitialize);
 

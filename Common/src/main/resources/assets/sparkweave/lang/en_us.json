@@ -1,7 +1,11 @@
 {
-  "argument.sparkweave.registries.not_found": "Registry not found: %s",
+  "argument.sparkweave.registry.not_found": "Registry not found: %s",
   "chat.sparkweave.open_folder": "Click to view in File Explorer",
-  "commands.sparkweave.debug.dump_registries.io_exception": "An IO error occurred while dumping registries: %s",
+  "commands.sparkweave.error.io_exception": "An IO error occurred while performing the command: %s",
+  "commands.sparkweave.debug.dump_tags.success": "Successfully exported tags for registry %s",
+  "commands.sparkweave.debug.dump_tags.success_path": "Successfully exported tags for registry %s to %s",
+  "commands.sparkweave.debug.dump_tags.multi_success": "Successfully exported tags for %s registries",
+  "commands.sparkweave.debug.dump_tags.multi_success_path": "Successfully exported tags for %s registries to %s",
   "commands.sparkweave.debug.dump_registries.success": "Successfully exported registry %s",
   "commands.sparkweave.debug.dump_registries.success_path": "Successfully exported registry %s to %s",
   "commands.sparkweave.debug.dump_registries.multi_success": "Successfully exported %s registries",
