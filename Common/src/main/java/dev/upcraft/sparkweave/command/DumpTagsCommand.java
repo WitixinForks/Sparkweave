@@ -72,7 +72,7 @@ public class DumpTagsCommand {
 	private static int dumpTags(CommandContext<CommandSourceStack> ctx, Registry<?> registry) throws CommandSyntaxException {
 		var player = ctx.getSource().getPlayerOrException();
 
-		var dir = Services.PLATFORM.getGameDir().resolve("sparkweave").resolve("tag_export");
+		var dir = Services.PLATFORM.getGameDir().resolve(SparkweaveMod.MODID).resolve("tag_export");
 		saveTags(registry, dir);
 
 		if (ctx.getSource().getServer().isSingleplayerOwner(player.getGameProfile())) {
