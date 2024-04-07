@@ -1,7 +1,7 @@
 [versions]
 neogradle = "7.+"
 
-neoforge = "20.4.214"
+neoforge = "20.4.221"
 
 [libraries]
 neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
