@@ -2,7 +2,6 @@ plugins {
 	id 'idea'
 	alias neoforge.plugins.neogradle
 }
-jarJar.enable()
 
 dependencies {
 	implementation neoforge.neoforge
@@ -135,12 +134,4 @@ processResources {
 
 processTestmodResources {
 	from project(":Common").sourceSets.testmod.resources
-}
-
-publishing {
-	publications {
-		"mavenJava${project.name}"(MavenPublication) {
-			jarJar.component(it)
-		}
-	}
 }
