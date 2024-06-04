@@ -36,8 +36,6 @@ dependencies {
 
 	modCompileOnly quilt.modmenu
 	modLocalRuntime quilt.modmenu
-
-	modLocalRuntime quilt.lazydfu
 }
 
 loom {
