@@ -20,7 +20,7 @@
 				"name": "Custom License",
 				"url": "${license_url}"
 			},
-			"icon": "assets/${mod_id}/icon.png"
+			"icon": "icon.png"
 		},
 		"entrypoints": {
 			"init": "dev.upcraft.sparkweave.quilt.entrypoint.Main",
