@@ -12,12 +12,6 @@ public record FabricModContainer(net.fabricmc.loader.api.ModContainer delegate, 
         return new FabricModContainer(delegate, new FabricModMetadata(delegate));
     }
 
-	@Deprecated(forRemoval = true)
-	@Override
-	public Path rootPath() {
-		return delegate().getRootPath();
-	}
-
 	@Override
 	public List<Path> rootPaths() {
 		return delegate().getRootPaths();

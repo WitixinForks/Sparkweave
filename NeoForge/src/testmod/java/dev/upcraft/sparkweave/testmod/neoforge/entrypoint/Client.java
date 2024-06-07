@@ -5,16 +5,14 @@ import dev.upcraft.sparkweave.testmod.client.SparkweaveTestmodClient;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
-@Mod.EventBusSubscriber(modid = SparkweaveTestmod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@EventBusSubscriber(modid = SparkweaveTestmod.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class Client {
 
 	@SubscribeEvent
-	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		if(event.phase == TickEvent.Phase.START) {
-			SparkweaveTestmodClient.onClientTickStart(Minecraft.getInstance());
-		}
+	public static void onClientTick(ClientTickEvent.Pre event) {
+		SparkweaveTestmodClient.onClientTickStart(Minecraft.getInstance());
 	}
 }

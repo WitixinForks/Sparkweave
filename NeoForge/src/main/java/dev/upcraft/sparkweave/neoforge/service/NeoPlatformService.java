@@ -7,11 +7,11 @@ import dev.upcraft.sparkweave.api.platform.RuntimeEnvironmentType;
 import dev.upcraft.sparkweave.api.platform.services.PlatformService;
 import dev.upcraft.sparkweave.neoforge.impl.mod.NeoforgeModContainer;
 import dev.upcraft.sparkweave.platform.BasePlatformService;
+import net.minecraft.SharedConstants;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
-import net.neoforged.neoforge.internal.versions.neoform.NeoFormVersion;
 import org.spongepowered.asm.util.JavaVersion;
 import oshi.SystemInfo;
 
@@ -42,7 +42,7 @@ public class NeoPlatformService extends BasePlatformService implements PlatformS
 		var platformName = getPlatformName();
 		var platformVersion = NeoForgeVersion.getVersion();
 
-		var mcVersion = NeoFormVersion.getMCVersion();
+		var mcVersion = SharedConstants.getCurrentVersion().getName();
 
 		var jvmVendor = System.getProperty("java.vm.vendor");
 		var jvmVersion = Runtime.version().toString();

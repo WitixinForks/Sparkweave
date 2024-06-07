@@ -13,18 +13,6 @@ public record NeoforgeModContainer(NeoForgeModMetadata metadata) implements ModC
         return new NeoforgeModContainer(new NeoForgeModMetadata(delegate));
     }
 
-	@Deprecated
-	@Override
-	public Path rootPath() {
-		return metadata().modInfo().getOwningFile().getFile().getSecureJar().getRootPath();
-	}
-
-	@Deprecated
-	@Override
-	public Path getPath(String file) {
-		return metadata().modInfo().getOwningFile().getFile().getSecureJar().getPath(file);
-	}
-
 	@Override
 	public List<Path> rootPaths() {
 		return List.of(metadata().modInfo().getOwningFile().getFile().getSecureJar().getRootPath());

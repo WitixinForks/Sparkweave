@@ -4,10 +4,10 @@ import dev.upcraft.sparkweave.SparkweaveMod;
 import dev.upcraft.sparkweave.api.client.render.DebugRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
-@Mod.EventBusSubscriber(modid = SparkweaveMod.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = SparkweaveMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class DebugRenderEvents {
 
 	@SubscribeEvent
