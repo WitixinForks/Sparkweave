@@ -3,7 +3,7 @@ plugins {
 }
 
 project.configurations.runtimeClasspath {
-	exclude(group: "loom_mappings_1_21_pre3_layered_hash_1765695326_v2.net.fabricmc", module: "fabric-loader")
+	exclude(group: "loom_mappings_1_21_pre4_layered_hash_1765695326_v2.net.fabricmc", module: "fabric-loader")
 }
 
 dependencies {
