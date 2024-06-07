@@ -59,4 +59,4 @@ buildCache {
 
 rootProject.name = 'Sparkweave'
 
-include 'Common', 'Fabric', 'NeoForge', 'Quilt'
+include 'Common', 'Fabric', 'NeoForge'/*, 'Quilt'*/
