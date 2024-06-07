@@ -31,6 +31,14 @@ jobs:
           path: |
             Common/build/libs/*.jar
             !Common/build/libs/*-dev.jar
+      - name: Upload build artifacts (Fabric)
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
+          path: |
+            Fabric/build/libs/*.jar
+            !Fabric/build/libs/*-dev.jar
       - name: Upload build artifacts (NeoForge)
         continue-on-error: true
         uses: actions/upload-artifact@v4
