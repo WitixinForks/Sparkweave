@@ -168,6 +168,8 @@ subprojects {
 			"neoforge_version"    : neoforge.versions.neoforge.get(),
 
 			"quilt_loader_version": quilt.versions.quilt.loader.get(),
+
+			"fabric_loader_version": fabric.versions.fabric.loader.get(),
 		]
 
 		filesMatching(['pack.mcmeta', '*.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {

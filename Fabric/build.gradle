@@ -2,10 +2,8 @@ plugins {
 	alias quilt.plugins.quilt.loom
 }
 
-// messy workaround for bug in quilt loom 1.3.3
-project.configurations.configureEach {
-	exclude(group: "net.fabricmc", module: "fabric-loader")
-	exclude(group: "net.fabricmc.fabric-api")
+project.configurations.runtimeClasspath {
+	exclude(group: "loom_mappings_1_20_4_layered_hash_919249853_v2.net.fabricmc", module: "fabric-loader")
 }
 
 dependencies {
@@ -15,10 +13,9 @@ dependencies {
 		it.officialMojangMappings()
 	})
 
-	modImplementation quilt.quilt.loader
-	modImplementation quilt.quilted.fabric.api
-	modLocalRuntime(quilt.quilted.fabric.api.deprecated) {
-		transitive = false
+	modImplementation fabric.fabric.loader
+	modImplementation (fabric.fabric.api) {
+		exclude group: "net.fabricmc", module: "fabric-loader"
 	}
 
 	compileOnly project(":Common")
@@ -26,16 +23,26 @@ dependencies {
 	testmodImplementation sourceSets.main.output
 	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
-	modImplementation libs.resourcefulconfig.fabric
+	modImplementation (libs.resourcefulconfig.fabric) {
+		transitive = false
+	}
 
 	implementation libs.appdirs
 	include libs.appdirs
 
-	modCompileOnly "${libs.emi.fabric.get()}:api"
-	modLocalRuntime libs.emi.fabric
+	modCompileOnly ("${libs.emi.fabric.get()}:api") {
+		transitive = false
+	}
+	modLocalRuntime (libs.emi.fabric) {
+		transitive = false
+	}
 
-	modCompileOnly fabric.modmenu
-	modLocalRuntime fabric.modmenu
+	modCompileOnly (fabric.modmenu) {
+		transitive = false
+	}
+	modLocalRuntime (fabric.modmenu) {
+		transitive = false
+	}
 }
 
 loom {
@@ -59,7 +66,7 @@ loom {
 	runs {
 		client {
 			client()
-			setConfigName("Quilt Client")
+			setConfigName("Fabric Client")
 			ideConfigGenerated(true)
 			runDir("run")
 
@@ -78,7 +85,7 @@ loom {
 
 		testmodClient {
 			client()
-			setConfigName("Quilt Testmod Client")
+			setConfigName("Fabric Testmod Client")
 			ideConfigGenerated(true)
 			runDir("run/testmod")
 			source(sourceSets.testmod)
@@ -98,7 +105,7 @@ loom {
 
 		server {
 			server()
-			setConfigName("Quilt Server")
+			setConfigName("Fabric Server")
 			ideConfigGenerated(true)
 			runDir("run/server")
 		}

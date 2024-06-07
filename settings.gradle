@@ -30,15 +30,18 @@ dependencyResolutionManagement {
 		libs {
 			from(files("./Common/libs.versions.toml"))
 		}
-		quilt {
-			from(files("./Quilt/libs.versions.toml"))
+		fabric {
+			from(files("./Fabric/libs.versions.toml"))
 		}
 		neoforge {
 			from(files("./NeoForge/libs.versions.toml"))
+		}
+		quilt {
+			from(files("./Quilt/libs.versions.toml"))
 		}
 	}
 }
 
 rootProject.name = 'Sparkweave'
 
-include 'Common', 'NeoForge', 'Quilt'
+include 'Common', 'Fabric', 'NeoForge', 'Quilt'
