@@ -42,7 +42,8 @@ public class Client implements ClientModInitializer {
 		});
 
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-			private final ResourceLocation ID = new ResourceLocation(SparkweaveMod.MODID, "translation_checker");
+			private final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SparkweaveMod.MODID, "translation_checker");
+
 			@Override
 			public ResourceLocation getFabricId() {
 				return ID;

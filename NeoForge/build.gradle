@@ -11,7 +11,7 @@ dependencies {
 	testmodImplementation sourceSets.main.output
 	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
-	implementation libs.resourcefulconfig.neoforge
+//	implementation libs.resourcefulconfig.neoforge
 
 	implementation libs.appdirs
 	jarJar(libs.appdirs) {
@@ -40,7 +40,7 @@ if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
 
 subsystems {
 	parchment {
-		minecraftVersion = libs.versions.minecraft.get()
+		minecraftVersion = "1.20.6" //  //TODO fix when parchment releases for 1.21
 		mappingsVersion = libs.versions.parchment.get()
 	}
 }

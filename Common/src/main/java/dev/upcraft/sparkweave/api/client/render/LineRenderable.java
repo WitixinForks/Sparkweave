@@ -9,8 +9,8 @@ public record LineRenderable(float startX, float startY, float startZ, float end
 	@Override
 	public void render(PoseStack poseStack, VertexConsumer vertexConsumer) {
 		var pose = poseStack.last();
-		vertexConsumer.vertex(pose, startX(), startY(), startZ()).color(red(), green(), blue(), alpha()).normal(pose, 0, 1, 0).endVertex();
-		vertexConsumer.vertex(pose, endX(), endY(), endZ()).color(red(), green(), blue(), alpha()).normal(pose, 0, 1, 0).endVertex();
+		vertexConsumer.addVertex(pose, startX(), startY(), startZ()).setColor(red(), green(), blue(), alpha()).setNormal(pose, 0, 1, 0);
+		vertexConsumer.addVertex(pose, endX(), endY(), endZ()).setColor(red(), green(), blue(), alpha()).setNormal(pose, 0, 1, 0);
 	}
 
 	@Override

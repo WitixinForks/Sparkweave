@@ -40,7 +40,7 @@ public class FabricRegistryHandler<T> implements RegistryHandler<T> {
 
 	@Override
 	public <S extends T> QuiltRegistrySupplier<S> register(String name, Supplier<S> factory) {
-		var id = new ResourceLocation(namespace, name);
+		var id = ResourceLocation.fromNamespaceAndPath(namespace, name);
 		var supplier = new QuiltRegistrySupplier<>(ResourceKey.create(registryKey, id), factory);
 
 		// immediately register entry

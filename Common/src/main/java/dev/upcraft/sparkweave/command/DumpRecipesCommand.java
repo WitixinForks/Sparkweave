@@ -19,8 +19,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class DumpRecipesCommand {
 		}
 
 		//noinspection unchecked
-		var recipes = ctx.getSource().getServer().getRecipeManager().getAllRecipesFor((RecipeType<Recipe<Container>>) holder.value());
+		var recipes = ctx.getSource().getServer().getRecipeManager().getAllRecipesFor((RecipeType<Recipe<RecipeInput>>) holder.value());
 		var outputFile = dir.resolve(holder.key().location().getNamespace()).resolve(holder.key().location().getPath() + ".csv");
 		var serializers = ctx.getSource().registryAccess().registryOrThrow(Registries.RECIPE_SERIALIZER);
 		try {

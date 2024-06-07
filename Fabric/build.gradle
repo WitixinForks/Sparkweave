@@ -3,7 +3,7 @@ plugins {
 }
 
 project.configurations.runtimeClasspath {
-	exclude(group: "loom_mappings_1_20_6_layered_hash_1765695326_v2.net.fabricmc", module: "fabric-loader")
+	exclude(group: "loom_mappings_1_21_pre3_layered_hash_1765695326_v2.net.fabricmc", module: "fabric-loader")
 }
 
 dependencies {
@@ -23,19 +23,19 @@ dependencies {
 	testmodImplementation sourceSets.main.output
 	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
-	modImplementation (libs.resourcefulconfig.fabric) {
-		transitive = false
-	}
+//	modImplementation (libs.resourcefulconfig.fabric) {
+//		transitive = false
+//	}
 
 	implementation libs.appdirs
 	include libs.appdirs
 
-	modCompileOnly ("${libs.emi.fabric.get()}:api") {
-		transitive = false
-	}
-	modLocalRuntime (libs.emi.fabric) {
-		transitive = false
-	}
+//	modCompileOnly ("${libs.emi.fabric.get()}:api") {
+//		transitive = false
+//	}
+//	modLocalRuntime (libs.emi.fabric) {
+//		transitive = false
+//	}
 
 	modCompileOnly (fabric.modmenu) {
 		transitive = false

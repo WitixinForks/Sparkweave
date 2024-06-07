@@ -1,11 +1,11 @@
 [versions]
-minecraft = "1.20.6"
+minecraft = "1.21-pre3"
 
 # The latest versions are available at https://parchmentmc.org/docs/getting-started
 parchment = "2024.06.02"
 
 mixin = "0.14.0+mixin.0.8.6"
-mixin_extras = "0.3.6"
+mixin_extras = "0.4.0-beta.2"
 asm = "9.6"
 jetbrains_annotations = "24.1.0"
 vanilla_gradle = "0.2.1-SNAPSHOT"

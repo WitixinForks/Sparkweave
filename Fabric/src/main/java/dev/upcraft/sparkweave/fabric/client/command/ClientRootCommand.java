@@ -25,11 +25,11 @@ public class ClientRootCommand {
 
 	private static int openConsentScreen(CommandContext<FabricClientCommandSource> ctx) {
 		List<ResourceLocation> permissions = List.of(
-			new ResourceLocation("sparkweave", "test1"),
-			new ResourceLocation("sparkweave", "test2"),
-			new ResourceLocation("sparkweave", "test3"),
-			new ResourceLocation("sparkweave", "test4"),
-			new ResourceLocation("sparkweave", "test5")
+			ResourceLocation.fromNamespaceAndPath("sparkweave", "test1"),
+			ResourceLocation.fromNamespaceAndPath("sparkweave", "test2"),
+			ResourceLocation.fromNamespaceAndPath("sparkweave", "test3"),
+			ResourceLocation.fromNamespaceAndPath("sparkweave", "test4"),
+			ResourceLocation.fromNamespaceAndPath("sparkweave", "test5")
 		);
 		System.out.println("opening screen");
 		ctx.getSource().getClient().setScreen(new ConsentScreen(permissions, true));
