@@ -58,6 +58,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ github.ref_name }}+Fabric
           version-type: beta
+          game-version-filter: any
           files: |
             Fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             Fabric/build/libs/*-@(sources|javadoc).jar
