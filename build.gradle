@@ -163,6 +163,7 @@ subprojects {
 			"discord_url"         : discord_url,
 			"homepage_url"        : homepage_url,
 			"minecraft_version"   : libs.versions.minecraft.get(),
+			"java_version"        : "${javaVersion}",
 
 			"neoforge_version"    : neoforge.versions.neoforge.get(),
 
