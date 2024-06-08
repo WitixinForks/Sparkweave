@@ -2,7 +2,7 @@
 # The latest versions are available at https://fabricmc.net/develop
 
 fabric_loader = "0.15.11"
-fabric_api = "0.99.5+1.21"
+fabric_api = "0.100.0+1.21"
 
 modmenu = "11.0.0-beta.1"
 
