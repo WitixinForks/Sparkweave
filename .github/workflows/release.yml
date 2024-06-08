@@ -58,6 +58,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ github.ref_name }}+Fabric
           version-type: beta
+          game-versions: ">1.20.x" #TODO remove once 1.21 releases
           game-version-filter: any
           files: |
             Fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
