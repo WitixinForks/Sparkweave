@@ -1,16 +1,12 @@
 plugins {
-	alias quilt.plugins.quilt.loom
-}
-
-project.configurations.runtimeClasspath {
-	exclude(group: "loom_mappings_1_21_pre4_layered_hash_1765695326_v2.net.fabricmc", module: "fabric-loader")
+	alias fabric.plugins.fabric.loom
 }
 
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
-		it.parchment("${libs.parchment.mappings.get()}@zip")
 		it.officialMojangMappings()
+		it.parchment("${libs.parchment.mappings.get()}@zip")
 	})
 
 	modImplementation fabric.fabric.loader
@@ -30,9 +26,9 @@ dependencies {
 	implementation libs.appdirs
 	include libs.appdirs
 
-//	modCompileOnly ("${libs.emi.fabric.get()}:api") {
-//		transitive = false
-//	}
+	modCompileOnly ("${libs.emi.fabric.get()}:api") {
+		transitive = false
+	}
 //	modLocalRuntime (libs.emi.fabric) {
 //		transitive = false
 //	}
@@ -49,11 +45,13 @@ loom {
 	mods {
 		"${mod_id}" {
 			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
-			sourceSet("main")
+			sourceSet sourceSets.main
+			sourceSet project(":Common").sourceSets.main
 		}
 
 		"${mod_id}_testmod" {
-			sourceSet("testmod")
+			sourceSet sourceSets.testmod
+			sourceSet project(":Common").sourceSets.testmod
 		}
 	}
 	if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {

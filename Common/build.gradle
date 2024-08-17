@@ -15,8 +15,8 @@ dependencies {
 
 	implementation libs.appdirs
 
-//	implementation libs.resourcefulconfig
-//	compileOnly "${libs.emi.asProvider().get()}:api"
+//	compileOnly libs.resourcefulconfig
+	compileOnly "${libs.emi.asProvider().get()}:api"
 
 	testmodImplementation sourceSets.main.output
 }

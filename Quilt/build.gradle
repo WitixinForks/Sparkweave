@@ -16,26 +16,36 @@ dependencies {
 	})
 
 	modImplementation quilt.quilt.loader
-	modImplementation quilt.quilted.fabric.api
-	modLocalRuntime(quilt.quilted.fabric.api.deprecated) {
-		transitive = false
-	}
+	modImplementation quilt.bundles.quilted.fabric.api
+//	modLocalRuntime(quilt.quilted.fabric.api.deprecated) {
+//		transitive = false
+//	}
 
 	compileOnly project(":Common")
 
 	testmodImplementation sourceSets.main.output
 	testmodCompileOnly project(path: ":Common", configuration: "testmod")
 
-	modImplementation libs.resourcefulconfig.fabric
+//	modImplementation (libs.resourcefulconfig.fabric) {
+//		transitive = false
+//	}
 
 	implementation libs.appdirs
 	include libs.appdirs
 
-	modCompileOnly "${libs.emi.fabric.get()}:api"
-	modLocalRuntime libs.emi.fabric
+	modCompileOnly("${libs.emi.fabric.get()}:api") {
+		transitive = false
+	}
+//	modLocalRuntime (libs.emi.fabric) {
+//		transitive = false
+//	}
 
-	modCompileOnly fabric.modmenu
-	modLocalRuntime fabric.modmenu
+	modCompileOnly(fabric.modmenu) {
+		transitive = false
+	}
+	modLocalRuntime(fabric.modmenu) {
+		transitive = false
+	}
 }
 
 loom {

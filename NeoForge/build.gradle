@@ -1,11 +1,9 @@
 plugins {
 	id 'idea'
-	alias neoforge.plugins.neogradle
+	alias neoforge.plugins.moddevgradle
 }
 
 dependencies {
-	implementation neoforge.neoforge
-
 	compileOnly project(":Common")
 
 	testmodImplementation sourceSets.main.output
@@ -14,99 +12,99 @@ dependencies {
 //	implementation libs.resourcefulconfig.neoforge
 
 	implementation libs.appdirs
+	additionalRuntimeClasspath libs.appdirs.get()
 	jarJar(libs.appdirs) {
 		transitive = false
 		jarJar.ranged(it, "[${libs.versions.appdirs.get()},)")
 	}
 
-//	compileOnly "${libs.emi.neoforge.get()}:api"
+	compileOnly "${libs.emi.neoforge.get()}:api"
 //	runtimeOnly libs.emi.neoforge
 }
 
-jar {
-	archiveClassifier.set("slim")
-}
+neoForge {
+	version = neoforge.versions.neoforge.get()
 
-tasks.jarJar.configure {
-	archiveClassifier.set('')
-}
-
-// Automatically enable neoforge AccessTransformers if the file exists
-// This location is hardcoded in FML and can not be changed.
-// https://github.com/neoforged/FancyModLoader/blob/a952595eaaddd571fbc53f43847680b00894e0c1/loader/src/main/java/net/neoforged/fml/loading/moddiscovery/ModFile.java#L118
-if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
-	minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
-}
-
-subsystems {
 	parchment {
-		minecraftVersion = "1.20.6" //  //TODO fix when parchment releases for 1.21
-		mappingsVersion = libs.versions.parchment.get()
-	}
-}
-
-sourceSets.testmod.runs.modIdentifier "testMod"
-runs {
-	configureEach {
-		systemProperty 'forge.logging.markers', 'REGISTRIES'
-		systemProperty 'forge.logging.console.level', 'debug'
-
-		dependencies {
-			runtime(libs.appdirs.get())
-		}
+		mappingsVersion = libs.versions.parchment.asProvider().get()
+		minecraftVersion = libs.versions.parchment.minecraft.get()
 	}
 
-	client {
-		modSource project.sourceSets.main
-		workingDirectory project.file('run')
-		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-
-		if (project.hasProperty('mc_uuid')) {
-			programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+	runs {
+		configureEach {
+			systemProperty 'forge.logging.markers', 'REGISTRIES'
+			systemProperty 'forge.logging.console.level', 'debug'
 		}
 
-		if (project.hasProperty('mc_username')) {
-			programArguments.add("--username=${project.findProperty('mc_username')}")
+		client {
+			client()
+			gameDirectory = project.file('run')
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+
+			sourceSet = sourceSets.main
+
+			if (project.hasProperty('mc_uuid')) {
+				programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+			}
+
+			if (project.hasProperty('mc_username')) {
+				programArguments.add("--username=${project.findProperty('mc_username')}")
+			}
+
+			if (project.hasProperty('mc_java_agent_path')) {
+				jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
+			}
 		}
 
-		if (project.hasProperty('mc_java_agent_path')) {
-			jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
+		server {
+			server()
+			gameDirectory = project.file('run')
+			programArguments.add('--nogui')
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+		}
+
+		testmodClient {
+			client()
+			gameDirectory = project.file('run/testmod')
+			systemProperty 'neoforge.enabledGameTestNamespaces', "${project.mod_id}_testmod"
+
+			sourceSet = sourceSets.testmod
+
+			if (project.hasProperty('mc_uuid')) {
+				programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+			}
+
+			if (project.hasProperty('mc_username')) {
+				programArguments.add("--username=${project.findProperty('mc_username')}")
+			}
+
+			if (project.hasProperty('mc_java_agent_path')) {
+				jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
+			}
+		}
+
+		data {
+			data()
+			gameDirectory = project.file('run')
+			// this must be strings ONLY, or neogradle will not generate run configs at all!
+			programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath)
 		}
 	}
 
-	server {
-		modSource project.sourceSets.main
-		workingDirectory project.file('run')
-
-		programArguments.add('nogui')
-		systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-	}
-
-	testmodClient {
-		configure runTypes.client
-		modSource project.sourceSets.testmod
-		modSource project.sourceSets.main
-		workingDirectory project.file('run/testmod')
-		systemProperty 'neoforge.enabledGameTestNamespaces', "${project.mod_id}_testmod"
-
-		if (project.hasProperty('mc_uuid')) {
-			programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
+	mods {
+		// define mod <-> source bindings
+		// these are used to tell the game which sources are for which mod
+		// mostly optional in a single mod project
+		// but multi mod projects should define one per mod
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+			sourceSet(project(":Common").sourceSets.main)
 		}
 
-		if (project.hasProperty('mc_username')) {
-			programArguments.add("--username=${project.findProperty('mc_username')}")
+		"${project.mod_id}_testmod" {
+			sourceSet(sourceSets.testmod)
+			sourceSet(project(":Common").sourceSets.testmod)
 		}
-
-		if (project.hasProperty('mc_java_agent_path')) {
-			jvmArgument("-javaagent:${project.findProperty('mc_java_agent_path')}")
-		}
-	}
-
-	data {
-		modSource project.sourceSets.main
-		workingDirectory project.file('run')
-		// this must be strings ONLY, or neogradle will not generate run configs at all!
-		programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath)
 	}
 }
 
