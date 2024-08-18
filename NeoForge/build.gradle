@@ -33,6 +33,22 @@ neoForge {
 		minecraftVersion = libs.versions.parchment.minecraft.get()
 	}
 
+	mods {
+		// define mod <-> source bindings
+		// these are used to tell the game which sources are for which mod
+		// mostly optional in a single mod project
+		// but multi mod projects should define one per mod
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+			sourceSet(project(":Common").sourceSets.main)
+		}
+
+		"${project.mod_id}_testmod" {
+			sourceSet(sourceSets.testmod)
+			sourceSet(project(":Common").sourceSets.testmod)
+		}
+	}
+
 	runs {
 		configureEach {
 			systemProperty 'forge.logging.markers', 'REGISTRIES'
@@ -45,6 +61,7 @@ neoForge {
 			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
 
 			sourceSet = sourceSets.main
+			mods = [neoForge.mods."${mod_id}"]
 
 			if (project.hasProperty('mc_uuid')) {
 				programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
@@ -62,8 +79,12 @@ neoForge {
 		server {
 			server()
 			gameDirectory = project.file('run')
-			programArguments.add('--nogui')
 			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+
+			sourceSet = sourceSets.main
+			mods = [neoForge.mods."${mod_id}"]
+
+			programArguments.add('--nogui')
 		}
 
 		testmodClient {
@@ -72,6 +93,7 @@ neoForge {
 			systemProperty 'neoforge.enabledGameTestNamespaces', "${project.mod_id}_testmod"
 
 			sourceSet = sourceSets.testmod
+			mods = [neoForge.mods."${mod_id}", neoForge.mods."${mod_id}_testmod"]
 
 			if (project.hasProperty('mc_uuid')) {
 				programArguments.add("--uuid=${project.findProperty('mc_uuid')}")
@@ -91,22 +113,9 @@ neoForge {
 			gameDirectory = project.file('run')
 			// this must be strings ONLY, or neogradle will not generate run configs at all!
 			programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath)
-		}
-	}
 
-	mods {
-		// define mod <-> source bindings
-		// these are used to tell the game which sources are for which mod
-		// mostly optional in a single mod project
-		// but multi mod projects should define one per mod
-		"${mod_id}" {
-			sourceSet(sourceSets.main)
-			sourceSet(project(":Common").sourceSets.main)
-		}
-
-		"${project.mod_id}_testmod" {
-			sourceSet(sourceSets.testmod)
-			sourceSet(project(":Common").sourceSets.testmod)
+			sourceSet = sourceSets.testmod
+			mods = [neoForge.mods."${mod_id}"]
 		}
 	}
 }
