@@ -15,7 +15,10 @@ dependencies {
 	additionalRuntimeClasspath libs.appdirs.get()
 	jarJar(libs.appdirs) {
 		transitive = false
-		jarJar.ranged(it, "[${libs.versions.appdirs.get()},)")
+		version {
+			strictly "[${libs.versions.appdirs.get()},)"
+			prefer libs.versions.appdirs.get()
+		}
 	}
 
 	compileOnly "${libs.emi.neoforge.get()}:api"
