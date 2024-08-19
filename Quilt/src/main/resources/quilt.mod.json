@@ -46,13 +46,6 @@
 					"curseforge": "634179",
 					"modrinth": "qvIfYCYJ"
 				}
-			},
-			{
-				"id": "resourcefulconfig",
-				"mc-publish": {
-					"curseforge": "714059",
-					"modrinth": "M1953qlQ"
-				}
 			}
 		],
 		"intermediate_mappings": "net.fabricmc:intermediary"

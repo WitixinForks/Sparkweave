@@ -12,12 +12,6 @@ public record QuiltModContainer(org.quiltmc.loader.api.ModContainer delegate, Qu
         return new QuiltModContainer(delegate, new QuiltModMetadata(delegate));
     }
 
-	@Deprecated(forRemoval = true)
-	@Override
-	public Path rootPath() {
-		return delegate().rootPath();
-	}
-
 	@Override
 	public List<Path> rootPaths() {
 		return List.of(delegate().rootPath());
@@ -26,11 +20,5 @@ public record QuiltModContainer(org.quiltmc.loader.api.ModContainer delegate, Qu
 	@Override
 	public Optional<Path> findPath(String path) {
 		return Optional.ofNullable(delegate().getPath(path));
-	}
-
-	@Deprecated(forRemoval = true)
-	@Override
-	public Path getPath(String file) {
-		return delegate().getPath(file);
 	}
 }
