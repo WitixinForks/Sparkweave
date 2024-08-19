@@ -43,7 +43,7 @@ jobs:
         run: ./gradlew publish
       - name: Publish (GitHub Releases)
         id: publish_github
-        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
         with:
           github-token: ${{ github.token }}
           version-type: beta
@@ -52,39 +52,37 @@ jobs:
             **/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Fabric)
         id: publish_fabric
-        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ github.ref_name }}+Fabric
           version-type: beta
-          game-versions: ">1.20.x" #TODO remove once 1.21 releases
-          game-version-filter: any
           files: |
             Fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             Fabric/build/libs/*-@(sources|javadoc).jar
-#      - name: Publish (NeoForge)
-#        id: publish_neoforge
-#        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
-#        with:
-#          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-#          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-#          version: ${{ github.ref_name }}+NeoForge
-#          version-type: beta
-#          files: |
-#            NeoForge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-#            NeoForge/build/libs/*-@(sources|javadoc).jar
-#      - name: Publish (Quilt)
-#        id: publish_quilt
-#        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
-#        with:
-#          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-#          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-#          version: ${{ github.ref_name }}+Quilt
-#          version-type: beta
-#          files: |
-#            Quilt/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-#            Quilt/build/libs/*-@(sources|javadoc).jar
+      - name: Publish (NeoForge)
+        id: publish_neoforge
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
+        with:
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          version: ${{ github.ref_name }}+NeoForge
+          version-type: beta
+          files: |
+            NeoForge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            NeoForge/build/libs/*-@(sources|javadoc).jar
+      - name: Publish (Quilt)
+        id: publish_quilt
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
+        with:
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          version: ${{ github.ref_name }}+Quilt
+          version-type: beta
+          files: |
+            Quilt/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            Quilt/build/libs/*-@(sources|javadoc).jar
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:
