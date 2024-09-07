@@ -45,25 +45,10 @@ public class DumpRecipesCommand {
 	}
 
 	private static int dumpRecipes(CommandContext<CommandSourceStack> ctx, Holder.Reference<RecipeType<?>> type) throws CommandSyntaxException {
-		var player = ctx.getSource().getPlayerOrException();
 		var dir = Services.PLATFORM.getGameDir().resolve(SparkweaveMod.MODID).resolve("recipe_export");
 
 		saveRecipes(ctx, type, dir);
-
-		if (ctx.getSource().getServer().isSingleplayerOwner(player.getGameProfile())) {
-			var resolvedDir = dir.resolve(type.key().location().getNamespace()).resolve(type.key().location().getPath()).toString();
-			var path = Component.literal(resolvedDir).withStyle(style -> style
-				.applyFormats(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)
-				.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.sparkweave.open_folder")))
-				.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, resolvedDir))
-			);
-
-			//TODO directly send to client to bypass message click event filtering
-			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_recipes.success_path", type.key().location(), path), true);
-		} else {
-			ctx.getSource().sendSuccess(() -> Component.translatable("commands.sparkweave.debug.dump_recipes.success", type.key().location()), true);
-		}
-
+		CommandHelper.sendPathResult(ctx, dir.resolve(type.key().location().getNamespace()).resolve(type.key().location().getPath()), () -> Component.translatable("commands.sparkweave.debug.dump_recipes.success", type.key().location()), path -> Component.translatable("commands.sparkweave.debug.dump_recipes.success_path", type.key().location(), path));
 		return Command.SINGLE_SUCCESS;
 	}
 
