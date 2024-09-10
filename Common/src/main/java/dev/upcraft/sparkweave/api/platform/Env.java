@@ -21,7 +21,7 @@ public class Env {
 			return System.getProperty(name);
 		}
 
-		return System.getProperty(prefix + "." + name);
+		return System.getProperty(prefix + '.' + name);
 	}
 
 	@CallerSensitive
@@ -36,7 +36,7 @@ public class Env {
 			return Boolean.getBoolean(name);
 		}
 
-		return Boolean.getBoolean(prefix + "." + name);
+		return Boolean.getBoolean(prefix + '.' + name);
 	}
 
 	@CallerSensitive
@@ -51,7 +51,7 @@ public class Env {
 			return Integer.getInteger(name, 0);
 		}
 
-		return Integer.getInteger(prefix + "." + name, 0);
+		return Integer.getInteger(prefix + '.' + name, 0);
 	}
 
 

@@ -8,7 +8,7 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t/%logger{36}][%level] %msg%n"/>
         </File>
         <Async name="SparkweaveDebugAsync">
-            <AppenderRef ref="MeshDebug" />
+            <AppenderRef ref="SparkweaveDebug" />
         </Async>
     </Appenders>
     <Loggers>

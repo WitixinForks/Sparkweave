@@ -1,8 +1,9 @@
 package dev.upcraft.sparkweave.api.logging;
 
+import dev.upcraft.sparkweave.SparkweaveMod;
 import dev.upcraft.sparkweave.api.annotation.CallerSensitive;
-import dev.upcraft.sparkweave.api.reflect.ContextHelper;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
+import dev.upcraft.sparkweave.api.reflect.ContextHelper;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
@@ -10,7 +11,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 public class SparkweaveLoggerFactory {
 
-	private static final LoggerContext ctx = Configurator.initialize(SparkweaveLoggerFactory.class.getClassLoader(), ConfigurationSource.fromResource("/assets/sparkweave/log4j2.xml", SparkweaveLoggerFactory.class.getClassLoader()));
+	private static final LoggerContext ctx = Configurator.initialize(SparkweaveLoggerFactory.class.getClassLoader(), ConfigurationSource.fromResource("/assets/%s/log4j2.xml".formatted(SparkweaveMod.MODID), SparkweaveLoggerFactory.class.getClassLoader()));
 
 	private SparkweaveLoggerFactory() {
 	}

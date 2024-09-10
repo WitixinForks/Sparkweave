@@ -23,8 +23,10 @@ public class SparkweaveApi {
 			RuntimeEnvironmentType.CLIENT.orElseThrow();
 		}
 
-		public static final boolean RENDER_SLOT_NUMBERS = DEBUG_MODE || Env.getBool("debug.render.slotnumber");
+		public static final boolean LOAD_RENDERDOC = Env.getBool("debug.render.load_renderdoc");
 
 		public static final boolean LOG_MISSING_TRANSLATIONS = DEVELOPMENT_ENVIRONMENT || Env.getBool("debug.log.missing_translations");
+
+		public static final boolean RENDER_SLOT_NUMBERS = DEBUG_MODE || Env.getBool("debug.render.slotnumber");
 	}
 }
