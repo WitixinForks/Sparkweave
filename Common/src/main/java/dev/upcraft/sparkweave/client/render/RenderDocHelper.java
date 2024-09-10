@@ -16,11 +16,10 @@ public class RenderDocHelper {
 		if(SparkweaveApi.Client.LOAD_RENDERDOC) {
 			var libraryPath = System.getProperty("java.library.path");
 
+			// if set, search in RENDERDOC_HOME first, then fall back to library path
 			var rdHome = System.getenv("RENDERDOC_HOME");
 			if(rdHome != null) {
-				LOGGER.debug("appending RENDERDOC_HOME to native library path");
-				libraryPath += File.pathSeparatorChar + rdHome;
-				System.setProperty("java.library.path", libraryPath);
+				libraryPath = rdHome + File.pathSeparator + rdHome;
 			}
 
 			var libraryName = System.mapLibraryName("renderdoc");
