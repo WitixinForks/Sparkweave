@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class FabricPlatformService extends BasePlatformService implements PlatformService {
 
-	private static final String QUILT_LOADER_MODID = "quilt_loader";
+	private static final String FABRIC_LOADER_MODID = "fabricloader";
 
 	private final Map<String, Optional<ModContainer>> MOD_CONTAINERS = new Object2ObjectOpenHashMap<>();
 	private final RuntimeEnvironmentType environmentType = switch (FabricLoader.getInstance().getEnvironmentType()) {
@@ -34,7 +34,7 @@ public class FabricPlatformService extends BasePlatformService implements Platfo
 		var os = info.getOperatingSystem();
 
 		var platformName = getPlatformName();
-		var platformVersion = getModContainer(QUILT_LOADER_MODID).orElseThrow(() -> new IllegalStateException("Unable to find quilt loader!")).metadata().version();
+		var platformVersion = getModContainer(FABRIC_LOADER_MODID).orElseThrow(() -> new IllegalStateException("Unable to find fabric loader!")).metadata().version();
 
 		var mcVersion = FabricLoaderImpl.INSTANCE.getGameProvider().getRawGameVersion();
 
