@@ -2,6 +2,7 @@ package dev.upcraft.sparkweave.quilt.impl.registry;
 
 import dev.upcraft.sparkweave.api.registry.RegistryHelper;
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -10,31 +11,35 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-public class QuiltRegistrySupplier<T> implements RegistrySupplier<T> {
+public class QuiltRegistrySupplier<R, T extends R> implements RegistrySupplier<T> {
 
 	private final ResourceKey<? super T> id;
 	private final Supplier<T> factory;
 	@Nullable
+	private LazyHolder holder;
+	@Nullable
 	private T value;
-	private Registry<? super T> registry;
 
-	public QuiltRegistrySupplier(ResourceKey<? super T> id, Supplier<T> factory) {
+	private Registry<R> registry;
+
+	public QuiltRegistrySupplier(ResourceKey<R> id, Supplier<T> factory) {
 		this.id = id;
 		this.factory = factory;
 	}
 
-	public void register(Registry<? super T> registry) {
+	public void register(Registry<R> registry) {
 		this.registry = registry;
 		this.value = Registry.register(registry, this.getId(), Objects.requireNonNull(this.factory.get(), "factory returned null for " + this.id));
+		((LazyHolder) holder()).bindValue(value);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get() {
 		if (value == null) {
-			Registry<Object> reg = (Registry<Object>) getRegistry();
-			value = (T) Objects.requireNonNull(reg.get(this.id.location()), "Registry supplier called too early: " + this.getId());
+			value = (T) Objects.requireNonNull(getRegistry().get(this.id.location()), "Registry supplier called too early: " + this.getId());
 		}
 		return value;
 	}
@@ -47,8 +52,7 @@ public class QuiltRegistrySupplier<T> implements RegistrySupplier<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean matches(TagKey<? super T> tag) {
-        Registry<Object> reg = (Registry<Object>) getRegistry();
-		return reg.getHolderOrThrow((ResourceKey<Object>) getRegistryKey()).is((TagKey<Object>) tag);
+		return holder().is((TagKey<R>) tag);
 	}
 
 	@Override
@@ -56,22 +60,32 @@ public class QuiltRegistrySupplier<T> implements RegistrySupplier<T> {
 		return this.id.location();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ResourceKey<? super T> getRegistryKey() {
-		return this.id;
+	public ResourceKey<R> getRegistryKey() {
+		return (ResourceKey<R>) this.id;
 	}
 
 	@Override
-	public Registry<? super T> getRegistry() {
+	public Registry<R> getRegistry() {
 		if(registry == null) {
 			registry = RegistryHelper.getBuiltinRegistry(ResourceKey.createRegistryKey(id.registry()));
 		}
 		return registry;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Holder<R> holder() {
+		if(holder == null) {
+			holder = new LazyHolder(getRegistryKey());
+		}
+		return holder;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof QuiltRegistrySupplier<?> other) {
+		if (obj instanceof QuiltRegistrySupplier<?, ?> other) {
 			return this.getRegistryKey() == other.getRegistryKey();
 		} else {
 			return false;
@@ -81,5 +95,22 @@ public class QuiltRegistrySupplier<T> implements RegistrySupplier<T> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.id.registry(), this.id.location());
+	}
+
+	private class LazyHolder extends Holder.Reference<R> {
+
+		private LazyHolder(ResourceKey<R> key) {
+			super(Type.STAND_ALONE, registry.holderOwner(), key, value);
+		}
+
+		@Override
+		public void bindValue(R value) {
+			super.bindValue(value);
+		}
+
+		@Override
+		public Stream<TagKey<R>> tags() {
+			return registry.getHolder(this.key()).map(Holder::tags).orElseGet(Stream::empty);
+		}
 	}
 }

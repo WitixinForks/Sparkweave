@@ -1,5 +1,6 @@
 package dev.upcraft.sparkweave.api.registry;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -32,4 +33,6 @@ public interface RegistrySupplier<T> extends Supplier<T> {
 	ResourceKey<? super T> getRegistryKey();
 
 	Registry<? super T> getRegistry();
+
+	<R> Holder<R> holder();
 }

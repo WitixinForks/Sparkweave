@@ -23,7 +23,7 @@ public class QuiltRegistryHandler<T> implements RegistryHandler<T> {
 
 	private final ResourceKey<Registry<T>> registryKey;
 	private final String namespace;
-	private final Supplier<Registry<? super T>> registry;
+	private final Supplier<Registry<T>> registry;
 
 	private final Map<ResourceLocation, RegistrySupplier<? extends T>> values = new Object2ObjectOpenHashMap<>();
 	private final List<RegistrySupplier<? extends T>> orderedEntries = new LinkedList<>();
@@ -39,9 +39,9 @@ public class QuiltRegistryHandler<T> implements RegistryHandler<T> {
 	}
 
 	@Override
-	public <S extends T> QuiltRegistrySupplier<S> register(String name, Supplier<S> factory) {
+	public <S extends T> QuiltRegistrySupplier<T, S> register(String name, Supplier<S> factory) {
 		var id = ResourceLocation.fromNamespaceAndPath(namespace, name);
-		var supplier = new QuiltRegistrySupplier<>(ResourceKey.create(registryKey, id), factory);
+		QuiltRegistrySupplier<T, S> supplier = new QuiltRegistrySupplier<>(ResourceKey.create(registryKey, id), factory);
 
 		// immediately register entry
 		supplier.register(registry.get());

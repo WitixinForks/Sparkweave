@@ -1,6 +1,7 @@
 package dev.upcraft.sparkweave.neoforge.mixin.internal;
 
 import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -17,4 +18,10 @@ public abstract class DeferredHolderMixin<R, T extends R> implements RegistrySup
 	@Invoker("getKey")
 	@Override
 	public abstract ResourceKey<? super T> getRegistryKey();
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Holder<R> holder() {
+		return (Holder<R>) this;
+	}
 }
