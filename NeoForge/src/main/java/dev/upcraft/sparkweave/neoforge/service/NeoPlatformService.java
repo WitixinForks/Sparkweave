@@ -5,18 +5,23 @@ import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
 import dev.upcraft.sparkweave.api.platform.RuntimeEnvironmentType;
 import dev.upcraft.sparkweave.api.platform.services.PlatformService;
+import dev.upcraft.sparkweave.neoforge.impl.mod.NeoForgeModMetadata;
 import dev.upcraft.sparkweave.neoforge.impl.mod.NeoforgeModContainer;
 import dev.upcraft.sparkweave.platform.BasePlatformService;
+import dev.upcraft.sparkweave.platform.SimpleModContainer;
 import net.minecraft.SharedConstants;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.util.JavaVersion;
 import oshi.SystemInfo;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -86,7 +91,18 @@ public class NeoPlatformService extends BasePlatformService implements PlatformS
 
 	@Override
 	public Optional<ModContainer> getModContainer(String modid) {
-		return ModList.get().getModContainerById(modid).map(NeoforgeModContainer::of);
+		var modList = ModList.get();
+		if(modList == null) { // ModList not loaded yet
+			@Nullable var modFile = LoadingModList.get().getModFileById(modid);
+			if(modFile == null) {
+				return Optional.empty();
+			}
+
+			var meta = new NeoForgeModMetadata(modFile.getMods().stream().filter(it -> modid.equals(it.getModId())).findFirst().orElseThrow(() -> new NoSuchElementException("LoadingModList did not contain mod with ID '%s'!".formatted(modid))));
+			return Optional.of(new SimpleModContainer(meta, List.of(modFile.getFile().getSecureJar().getRootPath()), path -> Optional.ofNullable(modFile.getFile().getSecureJar().getPath(path))));
+		}
+
+		return modList.getModContainerById(modid).map(NeoforgeModContainer::of);
 	}
 
 	@Override

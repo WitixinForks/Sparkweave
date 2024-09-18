@@ -1,7 +1,6 @@
 package dev.upcraft.sparkweave.neoforge.impl.mod;
 
 import dev.upcraft.sparkweave.api.platform.ModMetadata;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +12,8 @@ public class NeoForgeModMetadata implements ModMetadata {
 
 	private final IModInfo delegate;
 
-	public NeoForgeModMetadata(ModContainer modContainer) {
-		delegate = modContainer.getModInfo();
+	public NeoForgeModMetadata(IModInfo delegate) {
+		this.delegate = delegate;
     }
 
 	public IModInfo modInfo() {

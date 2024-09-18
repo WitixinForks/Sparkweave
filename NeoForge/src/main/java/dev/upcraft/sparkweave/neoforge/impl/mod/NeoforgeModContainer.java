@@ -10,7 +10,7 @@ import java.util.Optional;
 public record NeoforgeModContainer(NeoForgeModMetadata metadata) implements ModContainer {
 
     public static NeoforgeModContainer of(net.neoforged.fml.ModContainer delegate) {
-        return new NeoforgeModContainer(new NeoForgeModMetadata(delegate));
+        return new NeoforgeModContainer(new NeoForgeModMetadata(delegate.getModInfo()));
     }
 
 	@Override
