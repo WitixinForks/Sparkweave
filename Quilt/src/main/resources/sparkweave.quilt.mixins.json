@@ -6,7 +6,8 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "impl.ArgumentTypeInfosAccessor"
+    "impl.ArgumentTypeInfosAccessor",
+    "impl.registry.MappedRegistryMixin"
   ],
   "client": [
   ],

@@ -11,14 +11,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class FabricRegistrySupplier<R, T extends R> implements RegistrySupplier<T> {
 
 	private final ResourceKey<? super T> id;
 	private final Supplier<T> factory;
 	@Nullable
-	private LazyHolder holder;
+	private Holder<R> holder;
 	@Nullable
 	private T value;
 	private Registry<R> registry;
@@ -28,10 +27,22 @@ public class FabricRegistrySupplier<R, T extends R> implements RegistrySupplier<
 		this.factory = factory;
 	}
 
+	private T getOrCreateObject() {
+		if(this.value == null) {
+			this.value = Objects.requireNonNull(this.factory.get(), "factory returned null for " + this.id);
+		}
+		return this.value;
+	}
+
 	public void register(Registry<R> registry) {
 		this.registry = registry;
-		this.value = Registry.register(registry, this.getId(), Objects.requireNonNull(this.factory.get(), "factory returned null for " + this.id));
-		((LazyHolder) holder()).bindValue(value);
+		var object = getOrCreateObject();
+		Registry.register(registry, this.getRegistryKey(), object);
+		var entryHolder = registry.getHolderOrThrow(this.getRegistryKey());
+		if(entryHolder instanceof Holder.Reference<R> reference && (reference.type != Holder.Reference.Type.INTRUSIVE || reference.value == null)) {
+			reference.bindValue(this.value);
+		}
+		this.holder = entryHolder;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -77,7 +88,13 @@ public class FabricRegistrySupplier<R, T extends R> implements RegistrySupplier<
 	@Override
 	public Holder<R> holder() {
 		if (holder == null) {
-			holder = new LazyHolder(getRegistryKey());
+			holder = registry.getHolder(getRegistryKey()).orElseGet(() -> {
+				if(registry instanceof FabricRegistryHack<?>) {
+					return ((FabricRegistryHack<R>) registry).sparkweave$createHolder(getRegistryKey(), this::getOrCreateObject);
+				}
+
+				throw new IllegalStateException("Unable to create holder for entry %s because registry is not a mapped registry!".formatted(getRegistryKey()));
+			});
 		}
 		return holder;
 	}
@@ -94,22 +111,5 @@ public class FabricRegistrySupplier<R, T extends R> implements RegistrySupplier<
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.id.registry(), this.id.location());
-	}
-
-	private class LazyHolder extends Holder.Reference<R> {
-
-		private LazyHolder(ResourceKey<R> key) {
-			super(Type.STAND_ALONE, registry.holderOwner(), key, value);
-		}
-
-		@Override
-		public void bindValue(R value) {
-			super.bindValue(value);
-		}
-
-		@Override
-		public Stream<TagKey<R>> tags() {
-			return registry.getHolder(this.key()).map(Holder::tags).orElseGet(Stream::empty);
-		}
 	}
 }
