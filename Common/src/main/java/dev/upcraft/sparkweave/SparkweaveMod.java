@@ -1,10 +1,14 @@
 package dev.upcraft.sparkweave;
 
-import com.google.common.base.Preconditions;
+import dev.upcraft.sparkweave.api.SparkweaveApi;
 import dev.upcraft.sparkweave.api.entrypoint.MainEntryPoint;
 import dev.upcraft.sparkweave.api.event.CommandEvents;
 import dev.upcraft.sparkweave.api.platform.ModContainer;
+import dev.upcraft.sparkweave.api.platform.services.RegistryService;
+import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.command.SparkweaveCommandRoot;
+import dev.upcraft.sparkweave.util.SparkweaveDevCreativeTab;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 
@@ -18,6 +22,13 @@ public class SparkweaveMod implements MainEntryPoint {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		CommandEvents.REGISTER.register(SparkweaveCommandRoot::register);
+		var service = RegistryService.get();
+
+		if(SparkweaveApi.DEVELOPMENT_ENVIRONMENT) {
+			var creativeTabsRegister = RegistryHandler.create(Registries.CREATIVE_MODE_TAB, SparkweaveMod.MODID);
+			creativeTabsRegister.register(SparkweaveDevCreativeTab.DEBUG_MODE_TAB, SparkweaveDevCreativeTab::buildTab);
+			creativeTabsRegister.accept(service);
+		}
 	}
 
 	public static ResourceLocation id(String path) {
