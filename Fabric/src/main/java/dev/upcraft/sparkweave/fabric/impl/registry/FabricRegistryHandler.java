@@ -40,13 +40,22 @@ public class FabricRegistryHandler<T> implements RegistryHandler<T> {
 
 	@Override
 	public <S extends T> FabricRegistrySupplier<T, S> register(String name, Supplier<S> factory) {
-		var id = ResourceLocation.fromNamespaceAndPath(namespace, name);
-		FabricRegistrySupplier<T, S> supplier = new FabricRegistrySupplier<>(ResourceKey.create(registryKey, id), factory);
+		var id = ResourceKey.create(registryKey, ResourceLocation.fromNamespaceAndPath(namespace, name));
+		return register(id, factory);
+	}
+
+	@Override
+	public <S extends T> FabricRegistrySupplier<T, S> register(ResourceKey<T> id, Supplier<S> factory) {
+		if (!this.namespace.equals(id.location().getNamespace())) {
+			throw new IllegalArgumentException("Cannot register %s because namespace does not match the expected value %s".formatted(id, this.namespace));
+		}
+
+		var supplier = new FabricRegistrySupplier<T, S>(id, factory);
 
 		// immediately register entry
 		supplier.register(registry.get());
 
-		values.put(id, supplier);
+		values.put(id.location(), supplier);
 		orderedEntries.add(supplier);
 		return supplier;
 	}

@@ -20,6 +20,8 @@ public interface RegistryHandler<T> extends Consumer<RegistryService> {
 
 	<S extends T> RegistrySupplier<S> register(String name, Supplier<S> factory);
 
+	<S extends T> RegistrySupplier<S> register(ResourceKey<T> id, Supplier<S> factory);
+
 	Map<ResourceLocation, RegistrySupplier<? extends T>> values();
 
 	List<RegistrySupplier<? extends T>> getEntriesOrdered();

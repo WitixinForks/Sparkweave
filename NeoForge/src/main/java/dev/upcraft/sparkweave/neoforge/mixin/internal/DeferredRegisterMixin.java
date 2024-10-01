@@ -38,9 +38,21 @@ public abstract class DeferredRegisterMixin<T> {
 	@Shadow
 	public abstract Registry<T> makeRegistry(Consumer<RegistryBuilder<T>> consumer);
 
+	@Shadow
+	public abstract String getNamespace();
+
 	@SuppressWarnings("unchecked")
 	public <S extends T> RegistrySupplier<S> handler$register(String name, Supplier<S> factory) {
 		return (RegistrySupplier<S>) this.register(name, factory);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <S extends T> RegistrySupplier<S> handler$register(ResourceKey<T> id, Supplier<S> factory) {
+		if(!this.getNamespace().equals(id.location().getNamespace())) {
+			throw new IllegalArgumentException("Cannot register %s because namespace does not match the expected value %s".formatted(id, this.getNamespace()));
+		}
+
+		return (RegistrySupplier<S>) register(id.location().getPath(), factory);
 	}
 
 	@SuppressWarnings("unchecked")

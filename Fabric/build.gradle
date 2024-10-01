@@ -62,6 +62,10 @@ loom {
 	}
 
 	runs {
+		configureEach {
+			it.property("${mod_id}.debug", 'true')
+		}
+
 		client {
 			client()
 			setConfigName("Fabric Client")
