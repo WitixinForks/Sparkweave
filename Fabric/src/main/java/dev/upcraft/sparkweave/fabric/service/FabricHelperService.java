@@ -6,6 +6,7 @@ import dev.upcraft.sparkweave.api.platform.services.SparkweaveHelperService;
 import dev.upcraft.sparkweave.fabric.mixin.impl.ArgumentTypeInfosAccessor;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 
 public class FabricHelperService implements SparkweaveHelperService {
@@ -16,8 +17,8 @@ public class FabricHelperService implements SparkweaveHelperService {
 	}
 
 	@Override
-	public CreativeModeTab.Builder newCreativeTabBuilder() {
-		return FabricItemGroup.builder();
+	public CreativeModeTab.Builder newCreativeTabBuilder(Component title) {
+		return FabricItemGroup.builder().title(title);
 	}
 
 	@Override

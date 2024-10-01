@@ -5,18 +5,19 @@ import dev.upcraft.sparkweave.api.annotation.CalledByReflection;
 import dev.upcraft.sparkweave.api.platform.services.SparkweaveHelperService;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 
 public class NeoHelperService implements SparkweaveHelperService {
 
 	@CalledByReflection
 	public NeoHelperService() {
-
+		// need an explicit default constructor for the service loader to work
 	}
 
 	@Override
-	public CreativeModeTab.Builder newCreativeTabBuilder() {
-		return CreativeModeTab.builder();
+	public CreativeModeTab.Builder newCreativeTabBuilder(Component title) {
+		return CreativeModeTab.builder().title(title);
 	}
 
 	@Override

@@ -4,6 +4,10 @@ import dev.upcraft.sparkweave.api.platform.Services;
 import dev.upcraft.sparkweave.api.platform.services.SparkweaveHelperService;
 import dev.upcraft.sparkweave.api.registry.RegistryHandler;
 import dev.upcraft.sparkweave.api.registry.item.CreativeTabFiller;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ItemLike;
@@ -38,7 +42,20 @@ public class CreativeTabHelper {
 		itemProvider.stream().forEach(supplier -> collector.accept(supplier.get()));
 	}
 
+	@Deprecated(forRemoval = true, since = "0.502.0-alpha.1")
 	public static CreativeModeTab.Builder newBuilder() {
 		return HELPER.newCreativeTabBuilder();
+	}
+
+	public static CreativeModeTab.Builder newBuilder(Component title) {
+		return HELPER.newCreativeTabBuilder(title);
+	}
+
+	public static CreativeModeTab.Builder newBuilder(ResourceLocation id) {
+		return newBuilder(Component.translatable(Util.makeDescriptionId("itemGroup", id)));
+	}
+
+	public static CreativeModeTab.Builder newBuilder(ResourceKey<CreativeModeTab> id) {
+		return newBuilder(id.location());
 	}
 }
