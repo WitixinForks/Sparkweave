@@ -24,7 +24,7 @@ public class SparkweaveMod implements MainEntryPoint {
 		CommandEvents.REGISTER.register(SparkweaveCommandRoot::register);
 		var service = RegistryService.get();
 
-		if(SparkweaveApi.DEVELOPMENT_ENVIRONMENT) {
+		if(SparkweaveApi.DEVELOPER_CREATIVE_TAB) {
 			var creativeTabsRegister = RegistryHandler.create(Registries.CREATIVE_MODE_TAB, SparkweaveMod.MODID);
 			creativeTabsRegister.register(SparkweaveDevCreativeTab.DEVELOPER_MODE_TAB, SparkweaveDevCreativeTab::buildTab);
 			creativeTabsRegister.accept(service);

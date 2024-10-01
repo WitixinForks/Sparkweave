@@ -17,6 +17,8 @@ public class SparkweaveApi {
 
 	public static final Level DEBUG_LOG_LEVEL = Level.toLevel(Env.get("debug.logging.level"), DEVELOPMENT_ENVIRONMENT ? Level.ALL : Level.DEBUG);
 
+	public static final boolean DEVELOPER_CREATIVE_TAB = DEVELOPMENT_ENVIRONMENT || DEBUG_MODE || Env.getBool("developer.creative_tab.enabled");
+
 	public static class Client {
 
 		static {
