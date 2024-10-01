@@ -26,7 +26,7 @@ public class SparkweaveMod implements MainEntryPoint {
 
 		if(SparkweaveApi.DEVELOPMENT_ENVIRONMENT) {
 			var creativeTabsRegister = RegistryHandler.create(Registries.CREATIVE_MODE_TAB, SparkweaveMod.MODID);
-			creativeTabsRegister.register(SparkweaveDevCreativeTab.DEBUG_MODE_TAB, SparkweaveDevCreativeTab::buildTab);
+			creativeTabsRegister.register(SparkweaveDevCreativeTab.DEVELOPER_MODE_TAB, SparkweaveDevCreativeTab::buildTab);
 			creativeTabsRegister.accept(service);
 		}
 	}

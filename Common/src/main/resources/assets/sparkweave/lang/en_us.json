@@ -15,5 +15,6 @@
   "commands.sparkweave.debug.dump_tags.success_path": "Successfully exported tags for registry %s to %s",
   "commands.sparkweave.debug.dump_tags.multi_success": "Successfully exported tags for %s registries",
   "commands.sparkweave.debug.dump_tags.multi_success_path": "Successfully exported tags for %s registries to %s",
+  "itemGroup.sparkweave.developer_tab": "Developer Utilities",
   "screen.sparkweave.consent.title": "Consent Required"
 }
