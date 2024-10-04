@@ -37,4 +37,9 @@ public class ClientModBusRegistryEvents {
 		RegisterParticleFactoriesEvent.EVENT.invoker().registerParticleFactories(new RegisterParticleFactoriesEventImpl(event));
 	}
 
+	@SubscribeEvent
+	public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		RegisterLayerDefinitionsEvent.EVENT.invoker().registerModelLayers(event::registerLayerDefinition);
+	}
+
 }

@@ -8,10 +8,7 @@ import dev.upcraft.sparkweave.api.entrypoint.ClientEntryPoint;
 import dev.upcraft.sparkweave.client.event.RegisterItemPropertiesEventImpl;
 import dev.upcraft.sparkweave.entrypoint.EntrypointHelper;
 import dev.upcraft.sparkweave.fabric.client.command.ClientRootCommand;
-import dev.upcraft.sparkweave.fabric.impl.registry.RegisterBlockEntityRenderersEventImpl;
-import dev.upcraft.sparkweave.fabric.impl.registry.RegisterEntityRenderersEventImpl;
-import dev.upcraft.sparkweave.fabric.impl.registry.RegisterMenuScreensEventImpl;
-import dev.upcraft.sparkweave.fabric.impl.registry.RegisterParticleFactoriesEventImpl;
+import dev.upcraft.sparkweave.fabric.impl.registry.*;
 import dev.upcraft.sparkweave.validation.TranslationChecker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -64,6 +61,7 @@ public class Client implements ClientModInitializer {
 
 		RegisterBlockEntityRenderersEvent.EVENT.invoker().registerBlockEntityRenderers(new RegisterBlockEntityRenderersEventImpl());
 		RegisterEntityRenderersEvent.EVENT.invoker().registerEntityRenderers(new RegisterEntityRenderersEventImpl());
+		RegisterLayerDefinitionsEvent.EVENT.invoker().registerModelLayers(new RegisterLayerDefinitionsEventImpl());
 		RegisterItemPropertiesEvent.EVENT.invoker().registerItemProperties(new RegisterItemPropertiesEventImpl());
 		RegisterMenuScreensEvent.EVENT.invoker().registerMenuScreens(new RegisterMenuScreensEventImpl());
 		RegisterParticleFactoriesEvent.EVENT.invoker().registerParticleFactories(new RegisterParticleFactoriesEventImpl());
