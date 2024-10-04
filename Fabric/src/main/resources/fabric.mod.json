@@ -14,7 +14,6 @@
   },
   "license": "${license_url}",
   "icon": "icon.png",
-  "environment": "*",
   "entrypoints": {
     "main": [
       "dev.upcraft.sparkweave.fabric.entrypoint.Main"
@@ -25,16 +24,6 @@
     "server": [
       "dev.upcraft.sparkweave.fabric.entrypoint.DedicatedServer"
     ]
-  },
-  "mixins": [
-    "${mod_id}.mixins.json",
-    "${mod_id}.fabric.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=${fabric_loader_version}",
-    "minecraft": "=${minecraft_version}",
-    "java": ">=${java_version}",
-    "fabric-api": "*"
   },
   "custom": {
     "mc-publish": {
@@ -47,5 +36,17 @@
         "fabric"
       ]
     }
-  }
+  },
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "=${minecraft_version}",
+    "java": ">=${java_version}",
+    "fabric-api": "*"
+  },
+  "environment": "*",
+  "accessWidener": "${mod_id}.accesswidener",
+  "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
+  ]
 }
