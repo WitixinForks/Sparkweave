@@ -1,12 +1,10 @@
 package dev.upcraft.sparkweave.api.platform;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.util.Mth;
-import net.minecraft.util.StringRepresentable;
 
 import java.util.Arrays;
 
-public enum RuntimeEnvironmentType implements StringRepresentable {
+public enum RuntimeEnvironmentType {
 	CLIENT("client"),
 	SERVER("server");
 
@@ -17,11 +15,6 @@ public enum RuntimeEnvironmentType implements StringRepresentable {
     }
 
 	public String getName() {
-		return name;
-	}
-
-	@Override
-	public String getSerializedName() {
 		return name;
 	}
 
@@ -46,6 +39,4 @@ public enum RuntimeEnvironmentType implements StringRepresentable {
 			throw ex;
 		}
 	}
-
-	public static final Codec<RuntimeEnvironmentType> CODEC = StringRepresentable.fromEnum(RuntimeEnvironmentType::values);
 }
