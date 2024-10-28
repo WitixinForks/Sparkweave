@@ -23,9 +23,9 @@
 			"icon": "icon.png"
 		},
 		"entrypoints": {
-			"init": "dev.upcraft.sparkweave.quilt.entrypoint.Main",
-			"client_init": "dev.upcraft.sparkweave.quilt.entrypoint.Client",
-			"server_init": "dev.upcraft.sparkweave.quilt.entrypoint.DedicatedServer"
+			"main": "dev.upcraft.sparkweave.fabric.entrypoint.Main",
+			"client": "dev.upcraft.sparkweave.fabric.entrypoint.Client",
+			"server": "dev.upcraft.sparkweave.fabric.entrypoint.DedicatedServer"
 		},
 		"depends": [
 			{
@@ -62,6 +62,7 @@
 		"curseforge": "911456",
 		"modrinth": "nf68xfAw",
 		"loaders": [
+			"fabric",
 			"quilt"
 		],
 		"dependencies": [

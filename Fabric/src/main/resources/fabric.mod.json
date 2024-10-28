@@ -33,7 +33,8 @@
         "fabric-api(required)#{curseforge:306612}{modrinth:P7dR8mSH}"
       ],
       "loaders": [
-        "fabric"
+        "fabric",
+        "quilt"
       ]
     }
   },
